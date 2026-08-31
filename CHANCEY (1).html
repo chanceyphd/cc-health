@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Chancey // Ops · Week 3 · C&C Health OS</title>
+<style>
+:root{
+  --bg:#101413; --panel:#181E1C; --panel2:#121816; --ink:#E9EDE8; --dim:#8C968E;
+  --acc:#C9A227; --acc2:#9DB07A; --good:#6FBF73; --warn:#E2B93B; --bad:#D96A5F; --line:#26302B;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,'SF Pro Text','Helvetica Neue',Arial,sans-serif;font-size:16px}
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 120px}
+.hdr{display:flex;align-items:baseline;justify-content:space-between;margin:6px 0 2px}
+.brand{font-family:'Avenir Next Condensed','Arial Narrow','HelveticaNeue-CondensedBold',sans-serif;
+  font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:26px;color:var(--ink)}
+.brand b{color:var(--acc)}
+.sys{font-size:11px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;padding:9px 13px;border:1px solid var(--line);border-radius:10px;color:var(--dim);
+  font-size:13px;font-weight:600;background:var(--panel)}
+.chip.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.eyebrow{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:6px}
+.mission{border-left:3px solid var(--acc)}
+.mission .p{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:20px;line-height:1.25;margin:2px 0 8px;text-transform:uppercase;letter-spacing:.02em}
+.mission .r{font-size:13px;color:var(--dim);line-height:1.45}
+.mission .m{font-size:14px;color:var(--acc2);font-style:italic;margin-top:9px;line-height:1.4}
+.stitle{display:flex;justify-content:space-between;align-items:center;margin:18px 0 4px}
+.stitle h2{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:19px;margin:0;
+  text-transform:uppercase;letter-spacing:.05em}
+.tag{font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.exc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin:10px 0}
+.exhead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.exname{font-weight:700;font-size:16.5px;line-height:1.25}
+.sub{color:var(--warn);font-size:12.5px;font-weight:600}
+.target{font-size:13px;color:var(--acc);font-weight:600;margin-top:3px}
+.last{font-size:12px;color:var(--dim);margin-top:3px}
+.cue{font-size:12.5px;color:var(--dim);margin-top:6px;padding:7px 9px;background:var(--panel2);
+  border-radius:8px;line-height:1.4}
+.setrow{display:grid;grid-template-columns:26px 1fr 1fr 74px 44px;gap:7px;align-items:center;margin-top:8px}
+.setrow .n{color:var(--dim);font-size:12px;text-align:center}
+input,select,textarea{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--ink);
+  padding:10px 8px;font-size:16px;width:100%}
+textarea{min-height:44px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:0;border-color:var(--acc)}
+.ck{height:42px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--dim);
+  font-size:18px;font-weight:700}
+.ck.done{background:var(--good);border-color:var(--good);color:#10130f}
+.row{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:10px;
+  padding:9px 12px;font-size:13px;font-weight:600}
+.btn.acc{background:var(--acc);border-color:var(--acc);color:var(--bg)}
+.btn.ghost{color:var(--dim)}
+.gl{display:inline-block;margin-top:8px;font-size:12.5px;color:var(--good);font-weight:700}
+.tags{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.tg{flex:1 1 28%;text-align:center;padding:9px 4px;border-radius:9px;border:1px solid var(--line);
+  color:var(--dim);font-size:12px;font-weight:700;letter-spacing:.03em}
+.tg.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.tg.on.sore{background:#3d3a22;color:var(--warn);border-color:var(--warn)}
+.tg.on.hurt{background:#41291f;color:#E59866;border-color:#E59866}
+.tg.on.pain{background:#3f2320;color:var(--bad);border-color:var(--bad)}
+.mfig{margin-top:9px;background:var(--panel2);border-radius:10px;padding:10px;text-align:center}
+.mfig .act{font-size:12.5px;color:var(--acc2);margin-top:6px;line-height:1.4;text-align:left}
+.mreg{fill:#2a3230;stroke:none}
+.mreg.hot{fill:var(--acc)}
+.mbody{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55}
+.subs{margin-top:9px;background:var(--panel2);border-radius:10px;padding:10px}
+.subs .so{padding:9px 6px;border-bottom:1px solid var(--line);font-size:14px}
+.subs .so:last-child{border-bottom:none}
+.rd{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0 2px}
+.rb{padding:10px 0;text-align:center;border:1px solid var(--line);border-radius:9px;color:var(--dim);
+  font-weight:700;background:var(--panel2)}
+.rb.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.lbl{font-size:12px;color:var(--dim);margin-top:10px;letter-spacing:.06em;text-transform:uppercase}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.banner{background:#3a2f1d;border:1px solid var(--warn);color:var(--warn);border-radius:12px;
+  padding:11px;font-size:13px;line-height:1.4;margin:10px 0}
+.adjust{background:var(--panel2);border-left:3px solid var(--warn);border-radius:10px;padding:11px;
+  font-size:13px;color:var(--ink);margin:10px 0;line-height:1.45}
+#timer{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:2px solid var(--acc);
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;z-index:50}
+#timer .tin{max-width:520px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#tclock{font-family:'Avenir Next Condensed','Arial Narrow',monospace;font-size:30px;font-weight:800;color:var(--acc)}
+#tbarw{flex:1;height:6px;background:var(--panel2);border-radius:3px;overflow:hidden}
+#tbar{height:100%;background:var(--acc);width:100%}
+#tlab{font-size:11px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.foot{margin-top:22px;text-align:center;color:var(--dim);font-size:11.5px;letter-spacing:.06em}
+details summary{cursor:pointer;color:var(--acc);font-size:13px;font-weight:600;letter-spacing:.04em}
+details .card{margin-top:8px}
+.small{font-size:12.5px;color:var(--dim);line-height:1.45}
+h3.sect{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.08em;font-size:15px;margin:16px 0 4px;color:var(--acc2)}
+.wk{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin:9px 0}
+.wk.today{border-color:var(--acc)}
+.wkh{display:flex;justify-content:space-between;align-items:baseline}
+.wkd{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:800;font-size:17px;
+  text-transform:uppercase;letter-spacing:.06em}
+.wk.today .wkd{color:var(--acc)}
+.wkdate{font-size:12px;color:var(--dim)}
+.wks{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:14px}
+.wks .t{color:var(--ink)}
+.wks .sub2{color:var(--dim);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.wks .st{font-weight:700;font-size:12.5px;color:var(--dim)}
+.wks .st.done{color:var(--good)}
+.wks .st.part{color:var(--warn)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--dim);vertical-align:1px}
+.dot.Strength{background:var(--acc)} .dot.Mobility{background:var(--acc2)}
+.dot.Walk{background:#7FB2C9} .dot.Zone2{background:#7FB2C9}
+.prog{height:7px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--good)}
+.home{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:10px;
+  padding:8px 12px;font-size:13px;font-weight:700}
+.done-big{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;border:1px solid var(--acc);background:transparent;color:var(--acc)}
+.done-big.on{background:var(--good);border-color:var(--good);color:#10130f}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<div id="timer"><div class="tin">
+  <div><div id="tlab">Rest</div><div id="tclock">0:00</div></div>
+  <div id="tbarw"><div id="tbar"></div></div>
+  <button class="btn ghost" onclick="stopTimer()">Skip</button>
+</div></div>
+
+<script>
+const CFG = {"name": "Chancey", "brand": "CHANCEY <b>// OPS</b>", "tag": "Semper Fi", "key": "cchos_chancey_v1", "whoop": false, "motiv": ["Discipline got you here. Data keeps you here.", "Slow is smooth, smooth is fast — that includes the rest between sets.", "You're not chasing 22-year-old you. You're outlasting him.", "The mission is 30 more good years. Today is one rep of it.", "Strong for your age is fine. Strong, period, is the standard.", "The pocket healed. The habit never broke.", "Leaving reps in the tank on purpose is fire discipline.", "Cardio is the ruck you skipped. Pick it up.", "You don't need a PR. You need a thousand ordinary sessions.", "Maintain the machine and the machine maintains you.", "New job, same standard. Five days.", "The left arm sets the pace. The right arm follows.", "Rest the full clock. That's the set."], "sessions": [{"id": "mob1", "date": "2026-08-31", "title": "Mobility — 10 min", "time": "Morning", "kind": "act", "badge": "Mobility", "why": "Ten minutes you said you love. Now feed the left shoulder too", "research": "Short daily mobility beats one long weekly session for range gains (frequency > duration). Light band external rotation before pressing days warms the rotator cuff and the 'supporting muscles' you said were missing on the 17th.", "desc": "Your usual 10 min. Add: band external rotation ×15/side (LEFT first), wall slides ×10, 5 slow arm circles each way. Note anything that catches.", "distLabel": "—"}, {"id": "push1", "date": "2026-08-31", "title": "Push — Day 1", "time": "Afternoon", "kind": "lift", "badge": "Strength", "why": "Machine press is now primary — it didn't pinch. Left arm sets the pace on everything", "research": "Machine and dumbbell pressing produce the same chest hypertrophy at matched effort (Haugen 2023). Nothing is lost by taking the loaded stretch position away from the left arm while the ultrasound is pending. Loaded overhead press stays on hold.", "warmup": "5 min: band pull-aparts ×15, band external rotation ×15/side LEFT first, arm circles, cable crossover 5×15 easy. Then ramp on chest press 45×10, 65×6. Get the left arm warm BEFORE anything loaded — you called this on the 17th.", "ex": [{"name": "Machine Chest Press (cable stack)", "sets": 4, "reps": "8-10", "load": "95–100", "last": "90×8 @3–4 RIR (8/17) 🟢 — 'strength for more, not the stability'", "rest": 150, "cue": "The one that didn't hurt. Up 5–10 on the stack, keep 2–3 RIR. If the left arm feels loose or unstable, that's the stop signal — not the weight.", "subs": ["Seated Machine Chest Press (Matrix)", "Machine Incline Press", "Pec Deck", "DB Floor Press (light)"]}, {"name": "Machine Incline Press — pain-gated", "sets": 3, "reps": "10", "load": "start light, feel it out", "last": "DB incline pinched left front-shoulder/pit (8/17) — DB version parked, your call to bring it back", "rest": 120, "cue": "Bottom of the rep is where the pinch lives. Stop 2 inches short of full stretch. If it still pinches → Pec Deck today. That's an option, not a demotion.", "subs": ["Pec Deck", "Low-Incline DB Press (light, short range)", "Push-ups (feet elevated)", "Skip — add a set to #1"]}, {"name": "Cable Crossover (hip → mid-chest)", "sets": 3, "reps": "12", "load": "15", "last": "15×12 @1 RIR (8/17) — machine too narrow", "rest": 60, "cue": "If the station is tight, step forward a foot and squeeze at the end — width comes from the squeeze, not the stack.", "subs": ["Pec Deck", "DB Fly (light)", "Push-up burnout"]}, {"name": "DB Lateral Raise", "sets": 3, "reps": "12-15", "load": "20", "last": "20×15 @1 RIR (8/20) 🟢", "rest": 60, "cue": "One side at a time is fine — it's how you like it. Log the left.", "subs": ["Cable Lateral Raise", "Machine Lateral Raise"]}, {"name": "Cable Front Raise (to eye level)", "sets": 2, "reps": "12", "load": "5–10", "last": "5×12 @2 RIR (8/17) 🟢 — 'kept it low, burned it up'", "rest": 60, "subs": ["Plate Front Raise", "DB Front Raise"]}, {"name": "Triceps Pushdown (bar)", "sets": 3, "reps": "10-12", "load": "75–80", "last": "80×10 @1 RIR (8/17) — avg rest 33s, 'no fuel'", "rest": 60, "cue": "Take the full 60. The 'no fuel' set was a 33-second rest, not a fuel problem.", "subs": ["Rope Pushdown", "OH Cable Ext", "Bench Dips"]}, {"name": "One-Arm OH Cable Ext — LEFT FIRST", "sets": 3, "reps": "12", "load": "10–15", "last": "10×12 @1 RIR (8/17) — pain-free", "rest": 60, "cue": "The movement that doesn't wake the issue. Left arm picks the weight; right matches.", "subs": ["DB OH Ext (single, light)", "Rope OH Ext"]}, {"name": "Hanging Knee Raise — lower half", "sets": 3, "reps": "20", "load": "BW", "last": "2×25 (8/17) — 'down to 90'", "rest": 60, "subs": ["Captain's Chair Raise", "Lying Leg Raise", "Dead Bug ×10/side"]}]}, {"id": "pull1", "date": "2026-09-01", "title": "Pull — Day 2", "time": "Afternoon", "kind": "lift", "badge": "Strength", "why": "Clean 8s beat grinding 7s. Left arm sets every unilateral number", "research": "On the left/right gap: unilateral work where the weak side sets the rep target closes asymmetry faster than letting the strong side run ahead (bilateral deficit literature; McCurdy 2005). The right arm doesn't get stronger in the meantime — it just waits.", "warmup": "Band rows ×20, band external rotation ×15/side LEFT first, dead hang 20s (skip if the left pit complains), pulldown ramp ~50%×10, ~70%×5.", "ex": [{"name": "Lat Pulldown (Nautilus plate-loaded — Olympic math)", "sets": 4, "reps": "8", "load": "275–295", "last": "315×7 @0–1 RIR (8/18) — 'should have went to 275'", "rest": 150, "cue": "You said it yourself. 275×8 with 2 in the tank is the set. 315 is there whenever you want it.", "subs": ["Cable-stack Lat Pulldown", "Assisted Pull-up", "Machine Pullover"]}, {"name": "Seated Cable Row (close grip, 2s return)", "sets": 4, "reps": "10", "load": "145–155", "last": "145×10 @1–2 RIR (8/18) — 'the 2s return worked it big time'", "rest": 150, "cue": "You hate sitting there. Sit there. The return is the exercise.", "subs": ["Chest-Supported Row Machine", "ISO-Lateral Low Row", "Single-Arm Cable Row"]}, {"name": "Single-Arm DB Row — LEFT FIRST", "sets": 3, "reps": "10", "load": "50", "last": "60/50/50 ×10 @0 RIR (8/18) — 'running out of gas'", "rest": 90, "cue": "Left sets the reps. Right matches, doesn't exceed. Aim 2 RIR — 0 RIR every set is why you ran out of gas.", "subs": ["One-arm Cable Row", "Machine ISO Row"]}, {"name": "Face Pull (standing)", "sets": 3, "reps": "15", "load": "44", "last": "38×15 @4 RIR (8/18) 🟢", "rest": 60, "subs": ["Reverse Pec Deck", "Rear-Delt DB Fly"]}, {"name": "Straight-Arm Cable Pulldown", "sets": 3, "reps": "12", "load": "55", "last": "55×12 @1 RIR (8/18)", "rest": 60, "subs": ["Cable Pullover", "DB Pullover"]}, {"name": "EZ-Bar Curl", "sets": 3, "reps": "10-12", "load": "50–60", "last": "50×12 @1–4 RIR (8/18)", "rest": 60, "subs": ["Low-pulley EZ Curl", "DB Curl"]}, {"name": "Cross-Body Hammer Curl — LEFT FIRST", "sets": 3, "reps": "8", "load": "25–30", "last": "30×8 left maxed, right had 10–12 in it (8/18)", "rest": 90, "cue": "Left gets 8 clean → right does 8. Full 90s rest. The gap closes from the bottom, not the top.", "subs": ["Rope Cable Hammer", "Straight Hammer Curl"]}, {"name": "Hanging Knee Raise — upper half", "sets": 3, "reps": "15", "load": "BW", "last": "Station full (8/18)", "rest": 60, "subs": ["Captain's Chair Raise", "Reverse Crunch on bench", "Dead Bug ×10/side"]}]}, {"id": "mob2", "date": "2026-09-02", "title": "Mobility — 10 min", "time": "Morning", "kind": "act", "badge": "Mobility", "why": "Hips today — you said they don't open wide enough on the adductor machine", "research": "Adductor range responds to daily low-intensity exposure; the machine itself is a stretch under tension, which is the best-supported method for lasting range (Warneke 2023).", "desc": "Your usual 10 min. Add: 90/90 hip switches ×5/side, adductor rock-backs ×10, band external rotation ×15/side LEFT first.", "distLabel": "—"}, {"id": "legs1", "date": "2026-09-02", "title": "Legs — Day 3", "time": "Afternoon", "kind": "lift", "badge": "Strength", "why": "Machine-agnostic legs. Energy governs the number, the number doesn't govern you", "research": "Leg press and hack squat deliver squat-level quad hypertrophy with no axial spine load (Schwanbeck 2020) — right for the fusion history. Different machines = different numbers; RIR is the constant, not the plate.", "warmup": "5 min bike or brisk walk, bodyweight squat ×15, 90/90 ×5/side, adductor rock-backs ×10, then leg press ramp ~50%×12, ~70%×8.", "ex": [{"name": "Leg Press (mid foot)", "sets": 5, "reps": "10", "load": "by feel · 2 RIR last set", "last": "205×10 @2 RIR on the old-gym cable press (8/19) — 'felt like hack squats'", "rest": 150, "cue": "Whatever machine you're on, ramp to a top set at 2 RIR and hold it. The log tracks the machine, not just the number — say which one in the comment.", "subs": ["Hack Squat", "Belt Squat", "Goblet Squat"]}, {"name": "Seated Adductor Machine (2s hold)", "sets": 3, "reps": "15", "load": "25–30", "last": "25×15 @2 RIR (8/19) 🟢 — 'legs don't open wide enough'", "rest": 90, "cue": "Range before load. Set the pads where you can own the full squeeze; widen one notch per week. That's the exercise working on the exact thing you flagged.", "subs": ["Copenhagen Plank (knee)", "Side-lying Adductor Raise", "Cossack Squat (BW)"]}, {"name": "Bulgarian Split Squat — LEFT LEG FIRST", "sets": 3, "reps": "10", "load": "20–25", "last": "20×10 @2 RIR (8/19) 🟢 — neutral stance", "rest": 150, "cue": "Neutral stance, no exaggerated lunge — that IS the version I want. Left felt great; keep it leading.", "subs": ["DB Reverse Lunge", "Step-up (LEFT first)", "Leg Press single-leg"]}, {"name": "Lying or Seated Leg Curl", "sets": 3, "reps": "10-12", "load": "85", "last": "85×10 @2 RIR (8/19) — right outer-hip heat on set 2", "rest": 90, "cue": "Outer-hip heat during a hamstring curl is usually TFL/glute med grabbing to hold the pelvis, not the hamstring. Options: press hips hard into the pad, shorten the top of the range, or go seated. Yours to pick — or run it as-is and log it.", "subs": ["Seated Leg Curl", "Nordic Negatives", "Cable Pull-through"]}, {"name": "Leg Extension", "sets": 3, "reps": "12", "load": "90–95", "last": "85×12 @2 RIR (8/19)", "rest": 90, "subs": ["Sissy Squat (BW)", "Single-leg Extension"]}, {"name": "Standing Calf Raise", "sets": 3, "reps": "15", "load": "machine · or BW single-leg", "last": "Single-leg BW ×15 @0 RIR on a yoga block (8/19) 🟢 — 'tough'", "rest": 60, "cue": "No machine? Single-leg on a step, 3s down, pause at the bottom. That was a legit set.", "subs": ["Leg-press Calf Press", "Seated Calf Raise", "Single-leg BW on step (3s down)"]}, {"name": "Hanging Knee Raise (full)", "sets": 3, "reps": "15", "load": "BW", "last": "Subbed short-range crunches ×25 (8/19)", "rest": 60, "subs": ["Reverse Crunch on bench", "Crunch (short range)", "Dead Bug ×10/side"]}]}, {"id": "arms1", "date": "2026-09-03", "title": "Arms + Shoulders", "time": "Afternoon", "kind": "lift", "badge": "Strength", "why": "You said arms felt neglected. This is the fix — and the three you added are now on the sheet", "research": "10–20 hard sets per muscle per week is the hypertrophy sweet spot (Schoenfeld 2017 dose-response). With Mon/Tue/Thu you now land at ~14 direct biceps sets and ~14 triceps sets — solidly in range. Rest matters on arms: the 8/20 hammer set 'burned out' on a 7-second rest.", "warmup": "Band pull-aparts ×15, band external rotation ×15/side LEFT first, light curls ×15, light pushdowns ×15.", "ex": [{"name": "DB Lateral Raise", "sets": 3, "reps": "15", "load": "20", "last": "20×15 @1 RIR (8/20) 🟢 — 'loved it'", "rest": 60, "subs": ["Cable Lateral Raise", "Machine Lateral Raise"]}, {"name": "Chest-Supported Rear-Delt Fly", "sets": 3, "reps": "15", "load": "70–80", "last": "70×20 @2 RIR (8/20) 🟢", "rest": 60, "subs": ["Reverse Pec Deck", "Face Pull"]}, {"name": "Standing DB Curl (strict)", "sets": 3, "reps": "8-10", "load": "40", "last": "40×10 @1, 40×8 @1 (8/20) — FIRED UP", "rest": 90, "subs": ["EZ-Bar Curl", "Cable Curl"]}, {"name": "Incline DB Curl — alternating, 3s down", "sets": 3, "reps": "10", "load": "30", "last": "30×9 @2 RIR (8/20) — your add, now official", "rest": 90, "cue": "Watch the neck at the bottom — chin neutral, don't crank back into the pad.", "subs": ["Preacher Curl", "Bayesian Cable Curl"]}, {"name": "Hammer Curl — straight — LEFT FIRST", "sets": 3, "reps": "8", "load": "35", "last": "50×6, 40×6, 40×6 all @0 RIR, 7s rest (8/20) — 'burned myself out'", "rest": 90, "cue": "Start 35. Rest the full 90. Left first, stop at 8 with 2 in the tank. The 50 comes back when the left arm earns it.", "subs": ["Rope Cable Hammer", "Cross-Body Hammer"]}, {"name": "Triceps Rope Pushdown", "sets": 3, "reps": "12", "load": "66–77", "last": "66/88/88 ×12 logged, unchecked (8/20) — your add, now official", "rest": 60, "subs": ["Bar Pushdown", "Single-arm Pushdown"]}, {"name": "One-Arm OH Cable Ext — LEFT FIRST", "sets": 3, "reps": "12", "load": "10–15", "last": "10×12 @1 RIR, pain-free (8/17)", "rest": 60, "cue": "Second weekly exposure because it's the one that works and doesn't hurt.", "subs": ["DB OH Ext (single, light)", "Rope OH Ext"]}, {"name": "Bench Dip — pain-gated", "sets": 2, "reps": "AMRAP −2", "load": "BW", "last": "NEW — stop 2 short of failure", "rest": 60, "cue": "If the front of the left shoulder pinches at the bottom, that's the same spot as the incline. Shorten the dip or skip it. Options, not orders.", "subs": ["Close-grip Push-up", "Skip — add a set to #6"]}]}, {"id": "post1", "date": "2026-09-04", "title": "Posterior Primer + Carries", "time": "Afternoon", "kind": "lift", "badge": "Strength", "why": "'Sore and tight' twice = start lighter, not skip. Carries FIRST this time", "research": "A tight lower back tolerates hip-hinge loading better when the load pulls you into position (pull-through, back extension) rather than hangs off you (RDL). Build the pattern at 3+ RIR; the RDL unlocks when the gateway is clean (McGill on graded exposure). Carries were skipped for time — so they moved up the order.", "warmup": "Cat-cow ×10, bird-dog ×8/side, hinge drill with a dowel ×10 — hips back, dowel touching head, upper back, tailbone the whole way.", "ex": [{"name": "Suitcase Carry — LEFT HAND FIRST", "sets": 3, "reps": "40 yd/side", "load": "50–60", "last": "'Didn't get to it' (8/21) — it's first now", "rest": 90, "cue": "Tall. No lean. Left hand first so it gets the fresh set. Grip is a left-arm test too — log if it gives out early.", "subs": ["Farmer Carry (both hands)", "Rack Carry"]}, {"name": "45° Back Extension (BW)", "sets": 3, "reps": "12", "load": "BW", "last": "Skipped ×2 — 'sore and tight'", "rest": 90, "cue": "This is the gateway. Hips drive, spine stays long, no rounding, squeeze glutes at the top. If the back is tight, this is still the move — it's what un-tightens it. Clean today → RDL is yours next Friday.", "subs": ["Bird-dog ×10/side", "Glute Bridge ×15", "Cable Pull-through"]}, {"name": "Cable Pull-Through", "sets": 3, "reps": "12", "load": "33–44", "last": "NEW", "rest": 90, "cue": "The cable pulls you into the hinge. Same lesson as the RDL, gentler bill. Feel it in hamstrings and glutes, not the lower back.", "subs": ["Kettlebell/DB Swing (light)", "Hip Thrust (BW)"]}, {"name": "DB RDL — optional, your call", "sets": 2, "reps": "10", "load": "35–40/db", "last": "Not yet attempted in the block", "rest": 120, "cue": "Only if #2 and #3 were clean. If not, skip with zero guilt — that's the gate working, not you failing it.", "subs": ["Trap-bar DL (light)", "Skip"]}, {"name": "DB Shrug", "sets": 3, "reps": "15", "load": "50–60", "last": "Highpulls 65×20 (6/23) — shrug subbed while overhead is on hold", "rest": 60, "cue": "Straight up, 1s hold at the top. No rolling.", "subs": ["Trap-bar Shrug", "Cable Shrug"]}, {"name": "Plank Finisher", "sets": 3, "reps": "30s front + 20s/side", "load": "BW", "last": "—", "rest": 45, "subs": ["Dead Bug ×10/side", "Bird-dog ×10/side"]}]}, {"id": "z2", "date": "2026-09-04", "title": "Zone 2 — Beach", "time": "Any time", "kind": "act", "badge": "Zone2", "why": "Didn't happen in Week 2 — new job. Any 30 minutes counts", "research": "Zone 2 builds mitochondrial density and aerobic base; it's still the biggest longevity input missing from your block (Seiler). HR is paced, so the talk test governs: full sentences = right pace.", "desc": "30–40 min easy. Can't speak a full sentence? Slow down. Friday gone? Saturday morning is the backup — log it here either way.", "distLabel": "Distance (mi)"}], "restDate": "2026-09-06", "tags": [{"l": "STRONG"}, {"l": "SMOOTH"}, {"l": "DIALED"}, {"l": "GAS IN TANK"}, {"l": "FIRED UP"}, {"l": "TWEAK", "cls": "hurt"}]};
+
+/* ---------- storage (safe) ---------- */
+let MEM = {}; let CANSTORE = true;
+function load(){ try{ const s = localStorage.getItem(CFG.key); return s?JSON.parse(s):{}; }
+  catch(e){ CANSTORE=false; return MEM; } }
+function save(){ try{ localStorage.setItem(CFG.key, JSON.stringify(S)); }
+  catch(e){ CANSTORE=false; MEM = S; } }
+let S = load();
+S.r = S.r||{}; S.x = S.x||{}; S.act = S.act||{}; S.gl = S.gl||{}; S.added = S.added||{};
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function todayISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dayName(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{weekday:'short'}); }
+function mday(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{month:'numeric',day:'numeric'}); }
+function doy(){ const d=new Date(); return Math.floor((d - new Date(d.getFullYear(),0,0))/864e5); }
+function minRep(r){ const m = String(r).match(/\d+/); return m?parseInt(m[0]):1; }
+
+const DATES = [...new Set(CFG.sessions.map(s=>s.date))].sort();
+let CUR = DATES.includes(todayISO()) ? todayISO() : DATES[0];
+let VIEW = 'week';
+
+/* ---------- session status ---------- */
+function sesStatus(s){
+  const k = s.date + '|' + s.id;
+  if(s.kind !== 'lift'){
+    const a = S.act[k];
+    return (a && a.done) ? {txt:'✓ done', cls:'done'} : {txt:'—', cls:''};
+  }
+  const x = S.x[k]; if(!x) return {txt:'—', cls:''};
+  const total = s.ex.length;
+  let n = 0;
+  s.ex.forEach((e,i)=>{ const st=x[i]; if(st && st.sets && st.sets.some(t=>t&&t.t)) n++; });
+  if(n===0) return {txt:'—', cls:''};
+  return n>=total ? {txt:'✓ done', cls:'done'} : {txt:n+'/'+total+' lifts', cls:'part'};
+}
+
+/* ---------- render ---------- */
+function render(){ VIEW==='week' ? renderWeek() : renderDay(); }
+function goWeek(){ VIEW='week'; render(); window.scrollTo(0,0); }
+function setDay(d){ CUR = d; VIEW='day'; render(); window.scrollTo(0,0); }
+
+function renderWeek(){
+  const a = $('app'); let h = '';
+  h += `<div class="hdr"><div class="brand">${CFG.brand}</div><div class="sys">C&amp;C Health OS</div></div>`;
+  if(!CANSTORE) h += `<div class="banner">Preview mode — data will NOT save here. Save this file to your phone (Files app), then open it in Safari.</div>`;
+  const all = CFG.sessions.length;
+  const done = CFG.sessions.filter(s=>sesStatus(s).cls==='done').length;
+  h += `<div class="card"><div class="eyebrow">Week 3 · Aug 31 – Sep 4</div>
+    <div style="font-size:14px">${done} of ${all} sessions complete</div>
+    <div class="prog"><i style="width:${all?Math.round(done/all*100):0}%"></i></div></div>`;
+  DATES.forEach(d=>{
+    const today = d===todayISO();
+    const ss = CFG.sessions.filter(s=>s.date===d);
+    h += `<div class="wk ${today?'today':''}" onclick="setDay('${d}')">
+      <div class="wkh"><div class="wkd">${dayName(d)}${today?' · today':''}</div><div class="wkdate">${mday(d)}</div></div>`;
+    ss.forEach(s=>{
+      const st = sesStatus(s);
+      h += `<div class="wks"><div><span class="dot ${(s.badge||'').replace(' ','')}"></span><span class="t">${esc(s.title)}</span>
+        <div class="sub2" style="margin-left:15px">${esc(s.time||'')}</div></div>
+        <div class="st ${st.cls}">${st.txt}</div></div>`;
+    });
+    h += `</div>`;
+  });
+  h += `<div class="wk" onclick="void(0)"><div class="wkh"><div class="wkd" style="color:var(--dim)">Sun · rest</div><div class="wkdate">${mday(CFG.restDate||DATES[DATES.length-1])}</div></div>
+    <div class="wks"><div><span class="dot"></span><span class="t" style="color:var(--dim)">Full rest — export Saturday, reset today</span></div></div></div>`;
+  h += `<div class="card"><div class="eyebrow">Week close-out</div>
+    <div class="small" style="margin-bottom:9px"><b>The ritual:</b> Saturday after the lift → Export week, paste to Claude. Sunday → Reset. Monday's files arrive reprogrammed.</div>
+    <div class="row"><button class="btn acc" onclick="exportData()">Export week &amp; copy</button>
+    <button class="btn" onclick="shareData()">Share…</button>
+    <button class="btn ghost" onclick="resetWeek()">Reset week</button></div></div>`;
+  h += `<div class="foot">Health is the goal. Log the truth. · ${CFG.tag}</div>`;
+  a.innerHTML = h;
+}
+
+function renderDay(){
+  const a = $('app'); let h = '';
+  h += `<div class="hdr"><div class="brand">${CFG.brand}</div><button class="home" onclick="goWeek()">‹ Week</button></div>`;
+  if(!CANSTORE) h += `<div class="banner">Preview mode — data will NOT save here. Save this file to your phone (Files app), then open it in Safari. It works offline and remembers everything.</div>`;
+  h += `<div class="chips">` + DATES.map(d=>
+    `<button class="chip ${d===CUR?'on':''}" onclick="setDay('${d}')">${dayName(d)} ${mday(d)}</button>`).join('') + `</div>`;
+  h += readinessCard();
+  h += lowBanner();
+  const todays = CFG.sessions.filter(s=>s.date===CUR);
+  todays.forEach(s=>{ h += missionCard(s); h += (s.kind==='lift') ? liftCard(s) : actCard(s); });
+  h += `<div class="foot">Health is the goal. Log the truth. · ${CFG.tag}</div>`;
+  a.innerHTML = h;
+}
+
+/* ---------- exercise state ---------- */
+function xkey(sid){ return CUR + '|' + sid; }
+function exState(sid, i){
+  const k = xkey(sid); S.x[k] = S.x[k]||{};
+  S.x[k][i] = S.x[k][i]||{sets:[],c:'',tags:[],sub:''};
+  return S.x[k][i];
+}
+
+/* ---------- readiness ---------- */
+function rget(){ S.r[CUR] = S.r[CUR]||{}; return S.r[CUR]; }
+function rset(f,v){ rget()[f]=v; save(); render(); }
+function rateRow(f,label){
+  const v = rget()[f];
+  return `<div class="lbl">${label}</div><div class="rd">` +
+    [1,2,3,4,5].map(n=>`<button class="rb ${v===n?'on':''}" onclick="rset('${f}',${n})">${n}</button>`).join('') + `</div>`;
+}
+function readinessCard(){
+  const r = rget();
+  let inner = rateRow('e','Energy') + rateRow('so','Soreness (5 = very sore)') + rateRow('sl','Sleep quality') + rateRow('m','Mood');
+  inner += `<div class="grid2" style="margin-top:10px">
+    <div><div class="lbl">Bodyweight (lbs)</div><input inputmode="decimal" value="${esc(r.bw||'')}" onchange="rset('bw',this.value)"></div>
+    <div><div class="lbl">Sleep (hrs)</div><input inputmode="decimal" value="${esc(r.slh||'')}" onchange="rset('slh',this.value)"></div></div>`;
+  if(CFG.whoop){
+    inner += `<h3 class="sect">Whoop</h3><div class="grid2">
+      <div><div class="lbl">Recovery %</div><input inputmode="numeric" value="${esc(r.rec||'')}" onchange="rset('rec',this.value)"></div>
+      <div><div class="lbl">HRV (ms)</div><input inputmode="numeric" value="${esc(r.hrv||'')}" onchange="rset('hrv',this.value)"></div>
+      <div><div class="lbl">Resting HR</div><input inputmode="numeric" value="${esc(r.rhr||'')}" onchange="rset('rhr',this.value)"></div>
+      <div><div class="lbl">Strain</div><input inputmode="decimal" value="${esc(r.strain||'')}" onchange="rset('strain',this.value)"></div></div>`;
+  }
+  const filled = ['e','so','sl','m'].filter(f=>r[f]).length;
+  return `<details ${filled<4?'open':''}><summary>Daily check-in ${filled===4?'✓':'('+filled+'/4)'}</summary>
+    <div class="card">${inner}</div></details>`;
+}
+function lowBanner(){
+  const r = rget();
+  const vals = ['e','sl','m'].map(f=>r[f]).filter(Boolean);
+  const avg = vals.length===3 ? (vals.reduce((a,b)=>a+b,0) + (r.so?(6-r.so):0)) / (r.so?4:3) : null;
+  const whoopLow = CFG.whoop && r.rec && Number(r.rec) < 34;
+  if((avg!==null && avg <= 2.5) || whoopLow){
+    return `<div class="adjust"><b>Readiness is low today.</b> Option, not an order: keep planned loads, drop the last set of each exercise, and bank recovery. Research: acute readiness-based volume cuts protect long-term progress (autoregulation, Helms 2018). Your call — you set the limits.</div>`;
+  }
+  return '';
+}
+
+/* ---------- mission ---------- */
+function missionCard(s){
+  const m = CFG.motiv[(doy() + s.date.length) % CFG.motiv.length];
+  return `<div class="stitle"><h2>${esc(s.title)}</h2><span class="tag">${esc(s.time||'')}</span></div>
+  <div class="card mission"><div class="eyebrow">Today's mission</div>
+    <div class="p">${esc(s.why)}</div>
+    <div class="r">${esc(s.research)}</div>
+    <div class="m">“${esc(m)}”</div></div>`;
+}
+
+/* ---------- lift sessions ---------- */
+function allEx(s){
+  const extra = (S.added[xkey(s.id)]||[]).map(n=>({name:n, sets:3, reps:'8-12', load:'—', rest:90, subs:[], added:true}));
+  return s.ex.concat(extra);
+}
+function liftCard(s){
+  let h = '';
+  if(s.warmup) h += `<details><summary>Warm-up ramp (2 min — do it)</summary><div class="card small">${esc(s.warmup)}</div></details>`;
+  allEx(s).forEach((ex,i)=>{ h += exCard(s,ex,i); });
+  h += `<div class="row"><button class="btn" onclick="addEx('${s.id}')">＋ Add exercise</button></div>`;
+  h += `<div class="card"><div class="lbl">Session note — how did it go?</div>
+    <textarea onchange="snote('${s.id}',this.value)">${esc((S.x[xkey(s.id)]||{}).note||'')}</textarea></div>`;
+  return h;
+}
+function snote(sid,v){ const k=xkey(sid); S.x[k]=S.x[k]||{}; S.x[k].note=v; save(); }
+
+function exCard(s,ex,i){
+  const st = exState(s.id,i);
+  const planned = ex.sets;
+  const nsets = Math.max(planned, st.sets.length + (st.sets.length>=planned?1:0));
+  let rows = '';
+  for(let si=0; si<nsets; si++){
+    const set = st.sets[si]||{};
+    rows += `<div class="setrow"><div class="n">${si+1}</div>
+      <input placeholder="lbs" inputmode="decimal" id="w_${s.id}_${i}_${si}" value="${esc(set.w||'')}" onchange="setField('${s.id}',${i},${si},'w',this.value)">
+      <input placeholder="reps" inputmode="numeric" id="r_${s.id}_${i}_${si}" value="${esc(set.r||'')}" onchange="setField('${s.id}',${i},${si},'r',this.value)">
+      <select id="rir_${s.id}_${i}_${si}" onchange="setField('${s.id}',${i},${si},'rir',this.value)">
+        <option value="">RIR</option>${[0,1,2,3,4,5].map(n=>`<option ${set.rir===String(n)||set.rir===n?'selected':''}>${n}</option>`).join('')}
+        <option ${set.rir==='6+'?'selected':''}>6+</option></select>
+      <button class="ck ${set.t?'done':''}" onclick="ckSet('${s.id}',${i},${si},${ex.rest||90})">✓</button></div>`;
+  }
+  const glOn = S.gl[ex.name];
+  const subsOpen = st.showSubs;
+  return `<div class="exc">
+    <div class="exhead"><div>
+      <div class="exname">${esc(ex.name)}${st.sub?` <span class="sub">→ ${esc(st.sub)}</span>`:''}${ex.added?' <span class="sub">(added)</span>':''}</div>
+      <div class="target">${ex.sets}×${esc(ex.reps)} @ ${esc(ex.load)} · rest ${fmtRest(ex.rest||90)}</div>
+      ${ex.last?`<div class="last">Last: ${esc(ex.last)}</div>`:''}
+    </div></div>
+    ${ex.cue?`<div class="cue">Coach: ${esc(ex.cue)}</div>`:''}
+    ${rows}
+    ${glOn?`<div class="gl">🟢 Green light — add load or a rep next time</div>`:''}
+    <div class="tags">
+      ${CFG.tags.map(t=>`<button class="tg ${t.cls||''} ${(st.tags||[]).includes(t.l)?'on':''}" onclick="tagEx('${s.id}',${i},'${t.l}')">${t.l}</button>`).join('')}
+    </div>
+    <div class="row">
+      ${ex.subs&&ex.subs.length?`<button class="btn" onclick="toggleSubs('${s.id}',${i})">${st.sub?'Change / undo swap':'Machine taken?'}</button>`:''}
+      ${ex.mus?`<button class="btn" onclick="toggleMus('${s.id}',${i})">💪 The muscle</button>`:''}
+      <button class="btn ghost" onclick="addSetNow('${s.id}',${i})">＋ Set</button>
+    </div>
+    ${st.showMus&&ex.mus?musFig(ex):''}
+    ${subsOpen?`<div class="subs"><div class="lbl" style="margin-top:0">Same muscle, do instead:</div>
+      ${st.sub?`<div class="so" style="color:var(--good)" onclick="useSub('${s.id}',${i},'')">↩ Back to original: ${esc(ex.name)}</div>`:''}
+      ${ex.subs.map(o=>`<div class="so" onclick="useSub('${s.id}',${i},'${esc(o).replace(/'/g,"\\'")}')">→ ${esc(o)}</div>`).join('')}</div>`:''}
+    <div class="lbl">Comment</div>
+    <textarea onchange="cmt('${s.id}',${i},this.value)">${esc(st.c||'')}</textarea>
+  </div>`;
+}
+function fmtRest(s){ return s>=120 ? (s/60)+' min' : s+'s'; }
+function setField(sid,i,si,f,v){ const st=exState(sid,i); st.sets[si]=st.sets[si]||{}; st.sets[si][f]=v; save(); }
+function ckSet(sid,i,si,rest){
+  const st = exState(sid,i);
+  const w = $('w_'+sid+'_'+i+'_'+si).value, r = $('r_'+sid+'_'+i+'_'+si).value, rir = $('rir_'+sid+'_'+i+'_'+si).value;
+  const cur = st.sets[si]||{};
+  if(cur.t){ // second tap = un-check, keep the numbers
+    st.sets[si] = {w, r, rir}; save(); render(); stopTimer(); return;
+  }
+  const now = Date.now();
+  const prev = st.sets[si-1];
+  st.sets[si] = {w, r, rir, t: now, rest: prev&&prev.t ? Math.round((now-prev.t)/1000) : null};
+  greenCheck(sid,i); save(); render(); startTimer(rest, si+1);
+}
+function greenCheck(sid,i){
+  const s = CFG.sessions.find(x=>x.id===sid); if(!s||!s.ex[i]) return;
+  const ex = s.ex[i]; const st = exState(sid,i);
+  const doneSets = st.sets.filter(x=>x&&x.t);
+  if(doneSets.length >= ex.sets && doneSets.slice(0,ex.sets).every(x=>Number(x.r)>=minRep(ex.reps) && (x.rir==='6+'||Number(x.rir)>=2))){
+    S.gl[ex.name] = 1;
+  }
+}
+function tagEx(sid,i,t){ const st=exState(sid,i); st.tags=st.tags||[];
+  const ix=st.tags.indexOf(t); if(ix>=0) st.tags.splice(ix,1); else st.tags.push(t); save(); render(); }
+function toggleMus(sid,i){ const st=exState(sid,i); st.showMus=!st.showMus; save(); render(); }
+
+/* ---------- muscle map (front + back figures) ---------- */
+const MREG = {
+ front: {
+  shoulders:'<circle cx="30" cy="46" r="8"/><circle cx="72" cy="46" r="8"/>',
+  chest:'<ellipse cx="40" cy="57" rx="10" ry="7"/><ellipse cx="62" cy="57" rx="10" ry="7"/>',
+  biceps:'<ellipse cx="17" cy="64" rx="6" ry="11"/><ellipse cx="85" cy="64" rx="6" ry="11"/>',
+  core:'<rect x="39" y="68" width="24" height="28" rx="7"/>',
+  quads:'<ellipse cx="40" cy="128" rx="8" ry="23"/><ellipse cx="62" cy="128" rx="8" ry="23"/>',
+  calves:'<ellipse cx="40" cy="170" rx="6" ry="13"/><ellipse cx="62" cy="170" rx="6" ry="13"/>'
+ },
+ back: {
+  upperback:'<ellipse cx="51" cy="52" rx="17" ry="10"/>',
+  lats:'<ellipse cx="40" cy="67" rx="9" ry="12"/><ellipse cx="62" cy="67" rx="9" ry="12"/>',
+  lowerback:'<ellipse cx="51" cy="86" rx="9" ry="8"/>',
+  triceps:'<ellipse cx="17" cy="64" rx="6" ry="11"/><ellipse cx="85" cy="64" rx="6" ry="11"/>',
+  glutes:'<circle cx="43" cy="104" r="8"/><circle cx="59" cy="104" r="8"/>',
+  hamstrings:'<ellipse cx="40" cy="134" rx="8" ry="18"/><ellipse cx="62" cy="134" rx="8" ry="18"/>',
+  calves:'<ellipse cx="40" cy="170" rx="6" ry="13"/><ellipse cx="62" cy="170" rx="6" ry="13"/>'
+ }
+};
+function bodyOutline(){
+  return '<circle class="mbody" cx="51" cy="22" r="12"/>'+
+   '<path class="mbody" d="M33 38 h36 a8 8 0 0 1 8 8 v46 a8 8 0 0 1 -8 8 h-36 a8 8 0 0 1 -8 -8 v-46 a8 8 0 0 1 8 -8 z"/>'+
+   '<rect class="mbody" x="8" y="44" width="13" height="44" rx="6.5"/>'+
+   '<rect class="mbody" x="81" y="44" width="13" height="44" rx="6.5"/>'+
+   '<rect class="mbody" x="31" y="100" width="17" height="86" rx="8"/>'+
+   '<rect class="mbody" x="54" y="100" width="17" height="86" rx="8"/>';
+}
+function musFig(ex){
+  function fig(side,label){
+    const regs = MREG[side];
+    let shapes='';
+    Object.keys(regs).forEach(k=>{
+      const hot = ex.mus.includes(k);
+      shapes += '<g class="mreg'+(hot?' hot':'')+'">'+regs[k]+'</g>';
+    });
+    return '<svg width="104" height="200" viewBox="0 0 102 192">'+shapes+bodyOutline()+
+      '<text x="51" y="190" text-anchor="middle" fill="var(--dim)" font-size="9" letter-spacing="2">'+label+'</text></svg>';
+  }
+  const needF = ex.mus.some(k=>MREG.front[k]), needB = ex.mus.some(k=>MREG.back[k]);
+  return '<div class="mfig">'+(needF?fig('front','FRONT'):'')+(needB?fig('back','BACK'):'')+
+    (ex.act?'<div class="act">✋ '+esc(ex.act)+'</div>':'')+'</div>';
+}
+function cmt(sid,i,v){ exState(sid,i).c = v; save(); }
+function toggleSubs(sid,i){ const st=exState(sid,i); st.showSubs=!st.showSubs; save(); render(); }
+function useSub(sid,i,name){ const st=exState(sid,i); st.sub=name; st.showSubs=false; save(); render(); }
+function addSetNow(sid,i){ const st=exState(sid,i); st.sets.push({}); save(); render(); }
+function addEx(sid){
+  const n = prompt('Exercise name:'); if(!n) return;
+  const k = xkey(sid); S.added[k] = S.added[k]||[]; S.added[k].push(n); save(); render();
+}
+
+/* ---------- activity sessions (yoga / walks / zone 2) ---------- */
+function aget(sid){ const k=xkey(sid); S.act[k]=S.act[k]||{}; return S.act[k]; }
+function aset(sid,f,v){ aget(sid)[f]=v; save(); if(f==='done'||f==='feel') render(); }
+function actCard(s){
+  const a = aget(s.id);
+  return `<div class="card">
+    ${s.desc?`<div class="small" style="margin-bottom:10px">${esc(s.desc)}</div>`:''}
+    <div class="grid2">
+      <div><div class="lbl">Duration (min)</div><input inputmode="numeric" value="${esc(a.dur||'')}" onchange="aset('${s.id}','dur',this.value)"></div>
+      <div><div class="lbl">${s.distLabel||'Distance (mi)'}</div><input inputmode="decimal" value="${esc(a.dist||'')}" onchange="aset('${s.id}','dist',this.value)"></div>
+    </div>
+    <div class="lbl">How did it feel? (1 rough – 5 great)</div>
+    <div class="rd">${[1,2,3,4,5].map(n=>`<button class="rb ${a.feel===n?'on':''}" onclick="aset('${s.id}','feel',${n})">${n}</button>`).join('')}</div>
+    <div class="lbl">Note</div><textarea onchange="aset('${s.id}','c',this.value)">${esc(a.c||'')}</textarea>
+    <div style="margin-top:12px"><button class="done-big ${a.done?'on':''}" onclick="aset('${s.id}','done',${a.done?0:1})">${a.done?'✓ Done':'Mark done'}</button></div>
+  </div>`;
+}
+
+/* ---------- rest timer ---------- */
+let TINT = null;
+function startTimer(sec, nextSet){
+  stopTimer();
+  const end = Date.now() + sec*1000;
+  $('timer').style.display = 'block';
+  $('tlab').textContent = 'Rest · set ' + nextSet + ' next · target ' + fmtRest(sec);
+  TINT = setInterval(()=>{
+    const left = Math.max(0, end - Date.now());
+    const s = Math.ceil(left/1000);
+    $('tclock').textContent = Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    $('tbar').style.width = (left/(sec*1000)*100)+'%';
+    if(left<=0){ $('tclock').textContent = 'GO'; clearInterval(TINT);
+      if(navigator.vibrate) navigator.vibrate([120,60,120]); }
+  }, 250);
+}
+function stopTimer(){ if(TINT) clearInterval(TINT); $('timer').style.display='none'; }
+
+/* ---------- export ---------- */
+function buildExport(){
+  let out = CFG.name.toUpperCase() + ' — C&C LOG EXPORT — ' + new Date().toLocaleString() + '\n';
+  Object.keys(S.r).sort().forEach(d=>{
+    const r = S.r[d]; const has = Object.values(r).some(v=>v);
+    if(!has) return;
+    out += '\n' + d + ' readiness: E' + (r.e||'-') + ' So' + (r.so||'-') + ' Sl' + (r.sl||'-') + ' M' + (r.m||'-');
+    if(r.bw) out += ' | BW ' + r.bw;
+    if(r.slh) out += ' | sleep ' + r.slh + 'h';
+    if(CFG.whoop && (r.rec||r.hrv)) out += ' | Whoop rec ' + (r.rec||'-') + '% HRV ' + (r.hrv||'-') + ' RHR ' + (r.rhr||'-') + ' strain ' + (r.strain||'-');
+  });
+  CFG.sessions.forEach(s=>{
+    const k = s.date + '|' + s.id;
+    if(s.kind==='lift'){
+      const x = S.x[k]; if(!x) return;
+      let lines = '';
+      const extras = S.added[k]||[];
+      const names = s.ex.map(e=>e.name).concat(extras);
+      names.forEach((nm,i)=>{
+        const st = x[i]; if(!st || (!st.sets.length && !st.c && !st.tag)) return;
+        const done = st.sets.filter(t=>t&&(t.t||t.w||t.r));
+        const setsTxt = done.map(t=>(t.w||'?')+'×'+(t.r||'?')+'@'+(!t.rir?'?':t.rir)+'RIR'+(t.t?'':'(unchecked)')).join(', ');
+        const rests = done.map(t=>t.rest).filter(v=>v);
+        const avgRest = rests.length ? Math.round(rests.reduce((a,b)=>a+b,0)/rests.length) : null;
+        const tEx = (s.ex[i]||{});
+        lines += '  ' + nm + (st.sub?' →SUB: '+st.sub:'') + ': ' + (setsTxt||'(no sets)');
+        if(avgRest) lines += ' | avg rest ' + avgRest + 's (target ' + (tEx.rest||90) + 's)';
+        if(S.gl[nm]) lines += ' | 🟢';
+        if(st.tags&&st.tags.length) lines += ' | TAGS: ' + st.tags.join(',');
+        if(st.c) lines += ' | "' + st.c + '"';
+        lines += '\n';
+      });
+      if(lines){ out += '\n\n' + s.date + ' · ' + s.title + '\n' + lines; if(x.note) out += '  Session note: "' + x.note + '"\n'; }
+    } else {
+      const a = S.act[k]; if(!a || (!a.done && !a.dur && !a.c)) return;
+      out += '\n\n' + s.date + ' · ' + s.title + ': ' + (a.done?'DONE':'logged') +
+        (a.dur?' · '+a.dur+' min':'') + (a.dist?' · '+a.dist:'') + (a.feel?' · felt '+a.feel+'/5':'') + (a.c?' · "'+a.c+'"':'');
+    }
+  });
+  out += '\n\n---JSON---\n' + JSON.stringify(S);
+  return out;
+}
+function exportData(){
+  const t = buildExport();
+  const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  if(navigator.clipboard){ navigator.clipboard.writeText(t).then(()=>{}); ok = true; }
+  alert(ok ? 'Log copied. Paste it to Claude.' : 'Copy failed — use Share instead.');
+}
+function shareData(){
+  const t = buildExport();
+  if(navigator.share){ navigator.share({title:CFG.name+' training log', text:t}); }
+  else exportData();
+}
+function resetWeek(){
+  if(!confirm('Reset for the new week? Make sure you exported first — this clears the week\'s logs. Green lights are kept.')) return;
+  S.x={}; S.act={}; S.r={}; S.added={}; save(); VIEW='week'; render();
+  alert('Clean slate. Green lights carried forward. See you Monday.');
+}
+
+render();
+</script>
+</body>
+</html>
