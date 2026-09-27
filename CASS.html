@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cass // Rise · Week 6 · C&C Health OS</title>
+<title>Cass // Rise · Week 7 · Deload · C&C Health OS</title>
 <style>
 :root{
   --bg:#171216; --panel:#201823; --panel2:#191219; --ink:#F0E9EE; --dim:#9A8E99;
@@ -105,32 +105,64 @@ h3.sect{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;text-trans
 .wks{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:14px}
 .wks .t{color:var(--ink)}
 .wks .sub2{color:var(--dim);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
-.wks .st{font-weight:700;font-size:12.5px;color:var(--dim)}
+.wks .st{font-weight:700;font-size:12.5px;color:var(--dim);text-align:right}
 .wks .st.done{color:var(--good)}
 .wks .st.part{color:var(--warn)}
+.wks .st.grn{color:var(--good)} .wks .st.yel{color:var(--warn)} .wks .st.red{color:var(--bad)}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--dim);vertical-align:1px}
 .dot.Strength{background:var(--acc)} .dot.Mobility{background:var(--acc2)}
-.dot.Walk{background:#7FB2C9} .dot.Zone2{background:#7FB2C9}
+.dot.Walk{background:#7FB2C9} .dot.Zone2{background:#7FB2C9} .dot.Fuel{background:var(--warn)}
 .prog{height:7px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:8px}
 .prog i{display:block;height:100%;background:var(--good)}
+.prog i.k{background:var(--acc2)}
 .home{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:10px;
   padding:8px 12px;font-size:13px;font-weight:700}
 .done-big{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:800;letter-spacing:.06em;
   text-transform:uppercase;border:1px solid var(--acc);background:transparent;color:var(--acc)}
 .done-big.on{background:var(--good);border-color:var(--good);color:#10130f}
+/* ---- fuel ---- */
+.fuel{border-left:3px solid var(--warn)}
+.ftg{font-size:12.5px;color:var(--dim);line-height:1.5;margin-bottom:6px}
+.ftg b{color:var(--ink)}
+.fbar{margin-top:9px}
+.fbl{display:flex;justify-content:space-between;font-size:12px;color:var(--dim)}
+.fbl span:first-child{text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.fea{margin-top:10px;padding:9px 10px;border-radius:9px;background:var(--panel2);font-size:13px;line-height:1.45;border-left:3px solid var(--dim)}
+.fea.grn{border-color:var(--good)} .fea.yel{border-color:var(--warn)} .fea.red{border-color:var(--bad)}
+.ftim{margin-top:8px;font-size:12.5px;color:var(--dim);line-height:1.6}
+.ftim b{color:var(--ink)}
+.fslot{margin-top:12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.fslot.hit{border-color:var(--good)}
+.fslot.dimm{opacity:.6}
+.fsh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.fsh b{font-size:14.5px;letter-spacing:.04em;text-transform:uppercase}
+.fwhen{font-size:11.5px;color:var(--dim);margin-left:6px}
+.fpk{font-size:12.5px;color:var(--acc);font-weight:700;white-space:nowrap}
+.ftgt{font-size:12px;color:var(--acc2);margin-top:3px}
+.fin{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:8px}
+.fin2{display:grid;grid-template-columns:1.2fr 1fr;gap:7px;margin-top:7px;align-items:center}
+.fin input,.fin2 input{background:var(--panel)}
+input[type=time]{color-scheme:dark;min-height:44px;-webkit-appearance:none;appearance:none}
+.fit{font-size:12px;color:var(--dim);margin-top:6px;line-height:1.4}
+.fpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.fchip{padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:12.5px;text-align:left}
+.fchip span{color:var(--dim);font-size:11px;margin-left:4px}
+.fchip.new{border-style:dashed;color:var(--acc)}
+.fx.on{background:var(--good);border-color:var(--good);color:#10130f}
+.frep{display:grid;grid-template-columns:82px 1fr;gap:6px 8px;font-size:13.5px;line-height:1.5;align-items:baseline}
+.frep b{color:var(--ink)}
+.frep .k{color:var(--dim);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
-
 <div id="timer"><div class="tin">
   <div><div id="tlab">Rest</div><div id="tclock">0:00</div></div>
   <div id="tbarw"><div id="tbar"></div></div>
   <button class="btn ghost" onclick="stopTimer()">Skip</button>
 </div></div>
-
 <script>
-const CFG = {"name": "Cassandra", "brand": "CASS <b>// RISE</b>", "tag": "Stronger every decade", "key": "cchos_cass_v1", "whoop": true, "motiv": ["Every rep today is bone you keep at 70.", "Strong is a skill. You're learning it — ahead of schedule.", "24 sit-to-stands in 30 seconds. 'Not strong' was never true.", "Muscle is your retirement account. Today's a deposit.", "Form first. Weight follows. Always.", "You walk the beach. Now you'll own it.", "Perimenopause changes the rules. Lifting rewrites them — that's research, not a slogan.", "Your future self is watching this set. Make her proud.", "Little hinges swing big doors. Today, literally.", "Done beats perfect. Logged beats done.", "Forty-five minutes. Rest the clock, log the truth.", "Left and right take turns. The weaker one goes first.", "Four for four again. Sixteen lifts in four weeks — that's a habit now.", "When the machine jumps too far, add a rep. Reps are plates too.", "The clock rests you. Tap it every set.", "Four days in a row this week. Upper, lower, upper, lower — each one rests the other.", "Last hard week of Block 1. Next week is easy on purpose. Then the legs get the spotlight.", "Six weeks ago these were numbers on a card. Now they're yours.", "Heavier, not more. That's Block 2. This week you earn the ticket.", "A sore elbow is information. Log it like a set."], "sessions": [{"id": "lowA", "date": "2026-09-21", "title": "Lower A — 45 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "Block 1's last hard week. Every Lower A lift was 🟢 with 2–3 left — one more step each, and leg press gets a preview of what's coming", "research": "Six weeks in: goblet squat 25→45, leg press 55→120, pull-through 15→32.5. That is not a beginner's curve anymore. This is the last hard week of Block 1. Next week (Sep 28–Oct 3) is a deload — same lifts, same weights, half the sets, everything easy — with measurements on Sat Oct 3. Then Block 2 starts Oct 5, and it's built around what you asked for: legs. Heavier weight for fewer reps on the big lifts (6–8 instead of 10), more sets for glutes and thighs, and an inner/outer-thigh plan that doesn't depend on a machine. The research behind 'heavier, not more' — Stacy Sims' work on women's training and the LIFTMOR bone-density trial — says heavy loads on the big lifts protect bone and build strength better than light-and-long. Today's third set of leg press is the first look at that number. Back to Mon/Tue/Thu/Fri: the four-straight-days week got three of four, which is the experiment answering itself.", "warmup": "5 min: brisk walk in, bodyweight squats ×10, glute bridges ×10, hip hinge drill with hands on hips ×10 (butt back, flat back), single-leg stand 15s each.", "ex": [{"name": "Goblet Squat", "sets": 3, "reps": "8-10", "load": "50", "last": "45×10 @3/2/2 RIR (9/15) 🟢", "rest": 90, "cue": "Up to 50. Eight clean reps counts — ten if they're there. Chest proud, elbows inside the knees, full depth, slow down. If there's no 50 on the rack or set 3 gets ugly, 45×12 for it. First taste of the Block 2 rule: heavier, fewer.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Cable Pull-Through", "sets": 3, "reps": "12", "load": "32.5", "last": "27.5/27.5/32.5 ×12 @3/3/2 RIR (9/15) 🟢", "rest": 90, "cue": "32.5 on all three — you owned it on set 3 last week with 2 left. Face away, rope between the legs, butt back toward the machine, flat back, stand and squeeze. Rests ran 119s; 90 is enough. Glutes, not back — or don't lift as high.", "mus": ["glutes", "hamstrings"], "act": "The butt. Squeeze it hard at the top of every rep — if you feel it in your lower back instead, don't lift as high."}, {"name": "Leg Press", "sets": 3, "reps": "8-10", "load": "120 → 130", "last": "120×10 @2/2/1 RIR (9/15) 🟢", "rest": 90, "cue": "Sets 1–2: 120×10. Set 3: if both had 2 left, 130×8 — that's the Block 2 preview number, and it tells us where Oct 5 starts. If set 2 had only 1 left, 120×10 again and that's the right call, not a miss. Feet mid-platform, lower to 90°, full 90 rest.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Step-Up — RIGHT LEG FIRST", "sets": 3, "reps": "10/leg", "load": "BW · high step", "last": "High step, BW ×8 @4/3/2 RIR (9/15) 🟢 — 'not enough balance to add weight'", "rest": 90, "cue": "Same high step, up to 10 a leg, hands free so the rack is there if you need it. Balance is the limiter here, not strength — so the step is reps, not weight. Right first. Drive through the heel, stand fully tall, lower slowly. If set 3 has 4+ left, hold one 10 at your chest with both hands for it — more stable than bells at your sides.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Calf Raise", "sets": 3, "reps": "12", "load": "80", "last": "70×12/12/15 @4/3/3 RIR (9/15) 🟢", "rest": 60, "cue": "Up to 80. 1s pause at the top, 3s down. Third set stays.", "mus": ["calves"], "act": "Back of the lower leg. Pause at the top, slow 3s down."}, {"name": "Bar Hang", "sets": 3, "reps": "20s", "load": "BW", "last": "15s / 15s / 13s (9/15)", "rest": 60, "cue": "Aim 20 on all three — 15/15/13 last week. Shoulders relaxed down (not shrugged), feet off the floor, breathe slow. Type your seconds in the reps box. If the right elbow talks while hanging, note it — that's useful.", "mus": ["lats", "core"], "act": "Forearms and the hands first; then the shoulders letting go. Breathe slow — the longer you relax, the longer you hang."}, {"name": "Single-Leg Balance — RIGHT FIRST", "sets": 2, "reps": "60s/side", "load": "BW", "last": "Right 45s, left 45s (9/15) 🟢", "rest": 30, "cue": "Both sides hit 45 — go for 60. Hands on hips, eyes on one fixed point. Right in set 1, left in set 2. Type your seconds in the reps box. If 60 is easy, next block's trick is eyes closed — not yet.", "mus": ["core", "calves"], "act": "Quiet strength: calf and deep core making hundreds of tiny corrections. Soft knee, tall spine, breathe."}]}, {"id": "upA", "date": "2026-09-22", "title": "Upper A — 45 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "Row earns its reps, shoulder press gets the 12.5s you earned. Right elbow: you tell us — log it, don't push through it", "research": "Your Thursday note said the right arm hurts around the top of the elbow. That's data, not a stop sign — but it's the first upper-body pain note in six weeks, so this session is built so you can find out what sets it off without making it worse. Two moves load the elbow most: the pulldown (grip and forearm) and anything pressing (triceps). Both stay, with adjustments: pulldown moves to a neutral grip (palms facing each other), which most elbows prefer; push-ups drop from three sets to two this week; chest press holds 40 with a longer rest — 120 instead of 90 — because your third set has died at 7–9 reps two weeks running and rest is the cheapest fix. The rule all session: if a rep hurts, stop the set there, tag HURT, and write which exercise and which rep. If it hurts at rest, or it's swollen, tell Chancey before Thursday. Next week's deload is also the elbow's best chance to settle.", "warmup": "5 min: arm circles ×10 each way, band pull-aparts ×15, wall push-ups ×10, then one easy set of chest press at 20. Add: 10 slow wrist circles each way and 10 open-close fists — wakes up the forearm.", "ex": [{"name": "Machine Chest Press", "sets": 3, "reps": "10-12", "load": "40", "last": "40×10/10/7 @2/2/1 RIR (9/16) 🟢", "rest": 120, "cue": "Same 40, rest 120 this week — the third set has run out of reps two weeks straight, and more rest comes before more weight. Blades pinned, smooth press. Elbow rule: a rep that hurts ends the set — tag HURT and write which rep. 3×12 @2 is still the ticket to 55 — or Block 2's 6–8 reps at 55 gets there another way.", "mus": ["chest", "triceps"], "act": "Chest. Hand flat on your chest — that muscle does the pressing. Shoulders down and back."}, {"name": "Seated Row", "sets": 3, "reps": "10", "load": "60", "last": "60×8 @3/3/2 RIR (9/16) 🟢", "rest": 90, "cue": "60 stays, reps go to 10 — the stack jumps 60→72, so reps are the step. Slow return, squeeze the blades to start every pull. Elbows close to the body, wrists straight.", "mus": ["lats", "upperback", "biceps"], "act": "Mid-back, between the shoulder blades. Start every pull by squeezing them together, then the arms follow."}, {"name": "Lat Pulldown", "sets": 3, "reps": "8-10", "load": "40 · neutral grip", "last": "40×8 @1, then 25×10 @2 ×2 (9/16) — '40 too heavy, nothing between 40 and 25'", "rest": 90, "cue": "Use the neutral-grip handle (palms facing each other, hands close) if the machine has one — easier on the elbow, same lats. 40 for 8. On 9/8 you did 40×10 @2 three times, so last week's drop was more likely the elbow or a different machine than lost strength. If 40 feels like last week again, 25×12 and write it down — the elbow decides this one, not the stack.", "mus": ["lats", "upperback", "biceps"], "act": "Mid-back, between the shoulder blades. Start every pull by squeezing them together, then the arms follow.", "subs": ["Assisted Pull-up — neutral grip, 3×8", "One-Arm DB Row — RIGHT ARM FIRST, 20×10"]}, {"name": "Seated DB Shoulder Press", "sets": 3, "reps": "8", "load": "12.5/db", "last": "10/db ×10 @2/2/1 RIR (9/16) 🟢", "rest": 90, "cue": "Ten clean reps on all three at 10 — that was the deal, so 12.5s for 8. Back on the pad, bells at ear height, press up and slightly in. If the elbow talks on the way up, 10s ×10 and tag it.", "mus": ["shoulders"], "act": "Top of the shoulders. Light weight, no swinging — if you have to swing, it's too heavy."}, {"name": "Incline Push-up (24\" bar)", "sets": 2, "reps": "12", "load": "BW", "last": "3×12 @2/1/1 RIR (9/16) 🟢", "rest": 60, "cue": "Two sets this week, not three — elbow week. Straight line, chest to bar, glutes tight. The rack notch stays until every set has 2 left.", "mus": ["chest", "triceps"], "act": "Chest. Hand flat on your chest — that muscle does the pressing. Shoulders down and back."}, {"name": "Dead Bug", "sets": 2, "reps": "15/side", "load": "BW", "last": "2×12 @3/3 RIR (9/16) 🟢", "rest": 45, "cue": "Up to 15 a side. Low back gently into the floor, slow reach, exhale on the reach. If the back arches, shorten the reach.", "mus": ["core"], "act": "Deep belly. Ribs down, low back gently pressed toward the floor. Breathe the whole time."}]}, {"id": "lowB", "date": "2026-09-24", "title": "Lower B — 45 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "RDL earns reps, split squat gets its first weight, bridge gets a bigger stack. Inner thigh back to 20 — 25 was the wrong jump, not the wrong exercise. Outer thigh has a plan B", "research": "Three things from last Thursday. (1) The 25 on the inner-thigh machine felt like a groin pull. That machine goes 15→20→25, and 20 had 4 left on 9/10, so 20 is the number — with the start pads set one notch narrower so you're not stretched at the bottom. The inner-thigh muscles are stabilizers that hate sudden range; they grow fine at 20 for 15 slow reps. (2) The outer-thigh machine is broken, so the card has a plan B that needs no machine: side-lying leg raise. Same muscle — the side of the hip — and it's the one that keeps your right knee tracking straight. The machine stays in the sub list for when it's fixed. (3) The RDL had 3 in the tank at 17.5 on all three sets and no back note — the cleanest hinge you've logged. It earns reps, not weight: the next bell is 20 and reps are the smaller step. Block 2 starts Oct 5 and legs are the headline — this is the last hard leg day of Block 1, so log it well. It's the baseline Block 2 is built from.", "warmup": "5 min: brisk walk in, glute bridges ×12, hip hinge drill with a dowel or broomstick ×10 (stick touches head, upper back, tailbone), bodyweight squats ×10, 10 slow side-to-side leg swings each leg (hand on the rack).", "ex": [{"name": "DB RDL — light, form checklist", "sets": 3, "reps": "10", "load": "17.5/db", "last": "17.5/db ×8 @3 RIR ×3 (9/17) 🟢 — no back note", "rest": 90, "cue": "17.5s, ten reps. Checklist every set: (1) butt back, not down; (2) soft knees; (3) bells slide down the thighs; (4) stop when the hamstrings stretch, not when the bells hit the floor; (5) squeeze glutes to stand. If the back talks, back to 8 reps or the pull-through — right call, not a fail.", "mus": ["hamstrings", "glutes"], "act": "Back of the thighs. Feel them stretch as you hinge, then squeeze them to stand. If your lower back talks, the hamstrings aren't doing their job yet — lighten and go slower."}, {"name": "Leg Press", "sets": 3, "reps": "10", "load": "120", "last": "110×10 @3/3/2 RIR (9/17) 🟢", "rest": 90, "cue": "120 here now, matching Monday's first two sets. Feet mid-platform, lower to 90°, full 90 rest. Even if Monday's 130×8 happened and felt good, this stays 120×10 — the second leg day sits a notch under the first.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Split Squat — RIGHT LEG FIRST — knee watch", "sets": 3, "reps": "8/leg", "load": "10 · held at chest", "last": "BW ×10 @4/3/2 RIR, full rests (9/17) 🟢 — no knee note", "rest": 90, "cue": "First weight on this one: hold a single 10 at your chest with both hands. Eight a leg. Front shin vertical, knee over the second toe, not falling inward. Full 90 rest — that's what fixed the knee. If balance isn't there with the bell, bodyweight ×12 is the same step. If the right knee complains, sub reverse lunge and tell Chancey.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away.", "subs": ["Reverse Lunge — RIGHT LEG FIRST, BW ×10", "Step-Up — RIGHT LEG FIRST, BW ×10"]}, {"name": "Glute Bridge — feet on floor", "sets": 3, "reps": "12", "load": "35 (25 + 10)", "last": "25 plate ×12 @3 RIR ×3 (9/17) 🟢", "rest": 60, "cue": "Stack a 10 on top of the 25 — 35 across the hips, both hands holding it. 2s squeeze at the top, ribs down. Three in the tank at 25 says 35 is right. If it slides around, 25 ×15 instead. This is the glute builder — Block 2 gives it more sets.", "mus": ["glutes", "hamstrings"], "act": "The butt. Squeeze it hard at the top of every rep — if you feel it in your lower back instead, don't lift as high."}, {"name": "Inner Thigh (machine)", "sets": 3, "reps": "15", "load": "20", "last": "15×15 @3 RIR ×3 (9/17) — '25 felt like a groin pull, went back to 15'", "rest": 60, "cue": "20, not 25 — 20 had 4 left on 9/10, and 25 was the jump that bit. Set the start pads one notch narrower than last time so you're not stretched at the bottom. Slow both directions, 1s squeeze at the close. Any groin twinge: stop, tag HURT, note it.", "mus": ["glutes"], "act": "Inner thighs. Slow both ways — these are stabilizers, not strength lifts. Never stretched at the bottom."}, {"name": "Side-Lying Leg Raise — RIGHT SIDE FIRST", "sets": 3, "reps": "15/side", "load": "BW", "last": "Outer-thigh machine broken (9/17) — this is the plan B", "rest": 45, "cue": "Lie on your left side, right leg on top, hips stacked (don't roll back), toes pointing forward not up. Raise the top leg to about 45°, 1s hold, 3s down. Fifteen, then switch. Right first. When 15 has 4+ left, rest a 5-lb plate or bell on the thigh. If the outer-thigh machine is fixed, it's in the sub list — 25×15 was the plan.", "mus": ["glutes"], "act": "Side of the hip — the muscle that keeps your knee from falling inward. If you feel it in the front of the hip, your toes are pointing up; point them forward.", "subs": ["Outer Thigh (machine) — 25×15", "Banded Lateral Walk — 15 steps each way ×3"]}]}, {"id": "upB", "date": "2026-09-25", "title": "Upper B — 45 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "No log for last Friday, so this is Week 5's card carried forward. Push-ups first while fresh, row and face pull step up, presses hold", "research": "There's no entry for Friday 9/18. If you did it and didn't log, go by what you actually lifted; if you skipped it, no drama — three of four on a four-straight-days week is the experiment answering itself, and this week has a rest day in the middle. The numbers below are from 9/11 with the steps you'd earned then. The elbow rule from Tuesday carries over: a rep that hurts ends the set, tag HURT, note the exercise and the rep. The Hammer Strength press and the one-arm row load the elbow most on this day — go by feel, not by the card. Last lift of Block 1. Next week: same lifts, half the sets, everything easy. Measurements Sat Oct 3.", "warmup": "5 min: arm circles, band pull-aparts ×15, wall push-ups ×10, 10 slow wrist circles each way, one easy set of the first lift at half weight.", "ex": [{"name": "Incline Push-up (24\" bar)", "sets": 3, "reps": "12", "load": "BW", "last": "12/12/10 @2/1/1 RIR (9/11) 🟢 — no log 9/18", "rest": 60, "cue": "First while you're fresh. Straight line, chest to bar, glutes tight. Aim 12 on all three — the third set at 10 is the one to get back. If the elbow talked on Tuesday, two sets here too. Same bar until every set has 2 left.", "mus": ["chest", "triceps"], "act": "Chest. Hand flat on your chest — that muscle does the pressing. Shoulders down and back."}, {"name": "One-Arm DB Row — RIGHT ARM FIRST", "sets": 3, "reps": "10/arm", "load": "22.5/db", "last": "20×10 @3/2/1 RIR (9/11) 🟢", "rest": 90, "cue": "Up to 22.5 — the step you earned on 9/11. Knee and hand on the bench, flat back, pull to the hip, squeeze the blade, slow down. Right first. Elbow close to your side, wrist straight; if the top of the elbow complains, 20×10 and tag it. Rest clock covers both arms — 90 after the left arm finishes.", "mus": ["lats", "upperback", "biceps"], "act": "Mid-back, between the shoulder blades. Start every pull by squeezing them together, then the arms follow."}, {"name": "Hammer Strength MTS Chest Press", "sets": 3, "reps": "8-10", "load": "20/side", "last": "20/side ×8/8/7 @2/1/1 RIR (9/11)", "rest": 90, "cue": "Same 20 a side. Target 10 with 2 left — reps are the progress. Blades pinned, press both arms together. Elbow rule: a rep that hurts ends the set — tag HURT and write which rep. When 20×10 has 2 in the tank on all three, add a 2.5 to each side.", "mus": ["chest", "triceps"], "act": "Chest. Hand flat on your chest — that muscle does the pressing. Shoulders down and back."}, {"name": "Face Pull (rope)", "sets": 3, "reps": "12-15", "load": "15", "last": "12.5×15 @3/2/2 RIR (9/11) 🟢", "rest": 60, "cue": "Up to 15. Rope at face height, thumbs pointing back toward you, pull straight at your nose, hands apart as it gets close so they finish beside your ears, elbows wide. Squeeze the back of the shoulders 1s. If you're leaning back to move it, it's too heavy — back to 12.5.", "mus": ["upperback", "shoulders"], "act": "Back of the shoulders and between the blades. Elbows lead, hands follow. This is the posture muscle."}, {"name": "DB Lateral Raise", "sets": 3, "reps": "10-12", "load": "7.5 → 5/db", "last": "5 ×10/12/12 @3/2/1 RIR (9/11)", "rest": 60, "cue": "Set 1: 7.5s for 10 while you're fresh — that's the test. Sets 2–3: back to 5s for 12. Slight elbow bend, raise to shoulder height like pouring two jugs, lower slowly. If the 7.5s make you swing, they're not ready; log it and stay at 5.", "mus": ["shoulders"], "act": "Top of the shoulders. Light weight, no swinging — if you have to swing, it's too heavy."}, {"name": "Plank + Side Plank", "sets": 2, "reps": "40s + 25s/side", "load": "BW", "last": "Completed (9/11)", "rest": 45, "cue": "Elbows under shoulders, squeeze glutes, hips level. Side plank on the knees is fine. Type your seconds in the reps box. If the elbow doesn't like the forearm plank, do it on your hands.", "mus": ["core"], "act": "Deep belly. Ribs down, low back gently pressed toward the floor. Breathe the whole time."}]}, {"id": "walk1", "date": "2026-09-26", "title": "Beach Walk or Yoga — optional", "time": "Morning", "kind": "act", "badge": "Mobility", "why": "Block 1 done. Move easy, then Export — this one matters", "research": "Export this week and paste it to Chancey — it's the last hard week of Block 1 and the baseline the deload and Block 2 are built from. Then 30 minutes easy or a yoga class; sauna 5 minutes, water before and after. Next week the card will look familiar but half the size. That's on purpose. Measurements Sat Oct 3.", "desc": "30-min beach walk or a yoga class. Log whichever you do — or nothing, and that's fine too. Export the whole week after.", "distLabel": "Distance (mi)"}], "tags": [{"l": "STRONG"}, {"l": "SMOOTH"}, {"l": "SORE", "cls": "sore"}, {"l": "HURT", "cls": "hurt"}, {"l": "PAIN", "cls": "pain"}], "restDate": "2026-09-27"};
+const CFG = {"name": "Cassandra", "brand": "CASS <b>// RISE</b>", "tag": "Stronger every decade", "key": "cchos_cass_v1", "whoop": true, "deload": true, "weekLabel": "Week 7 · Sep 28 – Oct 4 · Deload + refeed · Mon/Tue/Thu/Fri ~30 min · Sat measurements", "motiv": ["Deload is training. The muscle gets finished this week, not next.", "Eat for the 6:45 you. She's the one lifting.", "Half the sets. All the food.", "Four feedings, thirty grams each. That's the whole assignment.", "The scale will bounce this week. That's water in the muscle, not fat. Log it, don't fear it.", "Protein before bed is tomorrow's breakfast.", "Whoop can't see an empty tank. Only you can — so log the food.", "Bar hang and push-ups sit out. The elbow gets a vote this week.", "Saturday: seven numbers and three photos. The scale is one of the seven.", "You took 63 pounds off in 418 days. Now we build what's under it.", "Lean and strong, not small. Say it until the scale stops winning arguments.", "Recovery is where the last six weeks get cashed in.", "Four or more left in the tank. If it feels like work, you're doing it wrong this week.", "Ate now. Tap it. It's how the app knows you fed the lift.", "Creatine with breakfast. Every day, including Sunday.", "A rest day still has 120 grams in it.", "Same weights, same lifts, half the sets — easy on purpose.", "Block 2 starts Monday. Legs are the headline. Fuel is the ticket.", "Measurements before food, water, or the walk.", "Done beats perfect. Logged beats done."], "sessions": [{"id": "lowA", "date": "2026-09-28", "title": "Lower A — Deload — 30 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "Half the sets, same weights, four left in the tank. This week the work is at the table, not the rack", "research": "Deload means what it says: every lift below is one you've already owned, at the weight you owned it, for two sets instead of three, stopping with four or more reps left. Easy on purpose — the muscle you built over six weeks gets finished this week, not next. The bigger job is fuel. Your Whoop told the story in September: resting heart rate 79–81 on lift mornings against your own best of 73–75, HRV 12–15 against 16–18, recovery under 50% on three of four lift days last week, and 'tired, struggled' on Friday with a green Whoop — that's an empty tank, not a bad night. The scale went 134 to 131 in three weeks while you're trying to build. So the Fuel card above is now part of every day: 120 g of protein in four feedings of 30, about 2,000 calories on lift days and 1,800 on rest days, and food before and after the 6:45 session. Expect the scale to rise 1–3 lb over the next two weeks — that's water stored with carbohydrate in the muscle, not fat. The bar hang sits out this week for the elbow.", "warmup": "4 min: brisk walk in, bodyweight squats ×10, glute bridges ×10, hip hinge drill hands on hips ×10, single-leg stand 15s each.", "ex": [{"name": "Goblet Squat", "sets": 2, "reps": "10", "load": "50", "last": "50×10 @3/2/2 RIR (9/21) 🟢", "rest": 90, "cue": "Deload: two sets at 50, ten each, four or more left. Chest proud, elbows inside the knees, full depth, slow down. This is practice, not work.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Cable Pull-Through", "sets": 2, "reps": "12", "load": "32.5", "last": "32.5×12 @3/3/3 RIR (9/21) 🟢", "rest": 90, "cue": "Two sets at 32.5. Face away, rope between the legs, butt back, flat back, stand and squeeze. Four or more left.", "mus": ["glutes", "hamstrings"], "act": "The butt. Squeeze it hard at the top of every rep — if you feel it in your lower back instead, don't lift as high."}, {"name": "Leg Press", "sets": 2, "reps": "10", "load": "120", "last": "120×10 @2/2/1 RIR (9/21) 🟢 — the 130 preview waits for Block 2", "rest": 90, "cue": "Two sets at 120, ten each, easy. Feet mid-platform, lower to 90°. The 130×8 preview is postponed to Oct 5 on purpose — fueled, it'll be there.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Step-Up — RIGHT LEG FIRST", "sets": 2, "reps": "10/leg", "load": "BW · high step", "last": "High step, BW ×10 @2/2/1 RIR (9/21) 🟢", "rest": 90, "cue": "Two sets, right first, hands free with the rack there if you need it. Drive through the heel, stand fully tall, lower slowly. No bell this week.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Calf Raise", "sets": 2, "reps": "12", "load": "80", "last": "80×12 @3/3/3 RIR (9/21) 🟢", "rest": 60, "cue": "Two sets at 80. 1s pause at the top, 3s down.", "mus": ["calves"], "act": "Back of the lower leg. Pause at the top, slow 3s down."}, {"name": "Single-Leg Balance — RIGHT FIRST", "sets": 2, "reps": "60s/side", "load": "BW", "last": "Right 60s, left 60s (9/21) 🟢", "rest": 30, "cue": "Both sides hit 60 — repeat it. Hands on hips, eyes on one fixed point. Right in set 1, left in set 2. Type your seconds in the reps box. Eyes-closed version starts in Block 2.", "mus": ["core", "calves"], "act": "Quiet strength: calf and deep core making hundreds of tiny corrections. Soft knee, tall spine, breathe."}]}, {"id": "upA", "date": "2026-09-29", "title": "Upper A — Deload — 30 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "Two sets each, nothing new, the elbow gets the week off. Push-ups out, neutral grip in", "research": "Every set of chest press hit 10 at 40 last week for the first time — the 3×12 ticket is in sight, and Block 2's 6–8-rep version at 55 is the other road to the same place. Not this week. Two sets of each lift, four or more left, same weights. The right elbow has spoken three sessions running — push-ups on 9/22, then just holding a 10-lb bell at your chest on 9/24. Both put the elbow bent under load, so this week there are no push-ups and no bar hang, and the pulldown uses the neutral handle. If the elbow is quiet all week, that tells us something; if it isn't, tell Chancey before Block 2 is built. For the tendon itself: 10–15 g of collagen or gelatin with vitamin C about an hour before you lift has decent evidence for collagen repair (Shaw 2017) and no downside. Fuel today: the post-lift feeding inside 45 minutes of the last set — the Fuel card is watching the clock.", "warmup": "4 min: arm circles ×10 each way, band pull-aparts ×15, 10 slow wrist circles each way, 10 open-close fists, one easy set of chest press at 20.", "ex": [{"name": "Machine Chest Press", "sets": 2, "reps": "10", "load": "40", "last": "40×10/10/10 @2/2/1 RIR (9/22) 🟢 — first time all three sets hit 10", "rest": 120, "cue": "Two sets at 40, ten each, four or more left, 2-min rest. Blades pinned, smooth press. A rep that hurts the elbow ends the set — tag HURT and write which rep.", "mus": ["chest", "triceps"], "act": "Chest. Hand flat on your chest — that muscle does the pressing. Shoulders down and back."}, {"name": "Seated Row", "sets": 2, "reps": "10", "load": "60", "last": "60×10 @3/2/1 RIR (9/22) 🟢", "rest": 90, "cue": "Two sets at 60. Squeeze the blades to start every pull, slow return, elbows close, wrists straight.", "mus": ["lats", "upperback", "biceps"], "act": "Mid-back, between the shoulder blades. Start every pull by squeezing them together, then the arms follow."}, {"name": "Lat Pulldown", "sets": 2, "reps": "8-10", "load": "40 · neutral grip", "last": "40×10 @3/3/2 RIR (9/22) 🟢", "rest": 90, "cue": "Neutral handle (palms facing each other). Two sets at 40, eight to ten, easy. The elbow decides this one: any twinge, stop the set, tag it, write the rep.", "mus": ["lats", "upperback", "biceps"], "act": "Mid-back, between the shoulder blades. Start every pull by squeezing them together, then the arms follow.", "subs": ["Seated Row — 60×10 (if the pulldown bothers the elbow)", "One-Arm DB Row — RIGHT ARM FIRST, 20×10"]}, {"name": "Seated DB Shoulder Press", "sets": 2, "reps": "8", "load": "12.5/db", "last": "12.5×8 @3/3/2 RIR (9/22) 🟢", "rest": 90, "cue": "Two sets with the 12.5s, eight each. Back on the pad, bells at ear height, press up and slightly in. If the elbow talks on the way up, the 10s.", "mus": ["shoulders"], "act": "Top of the shoulders. Light weight, no swinging — if you have to swing, it's too heavy."}, {"name": "Dead Bug", "sets": 1, "reps": "15/side", "load": "BW", "last": "2×15 @3/2 RIR (9/22) 🟢", "rest": 45, "cue": "One set, 15 a side. Low back gently into the floor, slow reach, exhale on the reach.", "mus": ["core"], "act": "Deep belly. Ribs down, low back gently pressed toward the floor. Breathe the whole time."}]}, {"id": "lowB", "date": "2026-10-01", "title": "Lower B — Deload — 30 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "RDL and bridge stay at two sets. Split squat goes bodyweight for the elbow; inner thigh goes to the floor for the groin", "research": "The RDL logged 17.5×10 with three left and no back note — the cleanest hinge yet; it holds at that weight for two sets. Two changes for comfort, not because anything is retired: the split squat goes back to bodyweight because holding the bell at your chest bothered the elbow, and the inner-thigh machine sits out because 15 felt wrong in the left groin after 25 nearly pulled it on 9/17 — two strikes on the same machine. Its replacement is on the floor: the side-lying inner-thigh raise, same muscle, no machine, no stretched start position. The machine stays in the sub list for when the groin is quiet. Measurements are Saturday — Block 2's legs are built from those numbers, so eat and sleep this week like they matter, because they do.", "warmup": "4 min: brisk walk in, glute bridges ×12, hip hinge drill with a dowel ×10 (stick touches head, upper back, tailbone), bodyweight squats ×10, 10 slow side-to-side leg swings each leg with a hand on the rack.", "ex": [{"name": "DB RDL — light, form checklist", "sets": 2, "reps": "10", "load": "17.5/db", "last": "17.5×10 @3/3 RIR (9/24) 🟢 — no back note", "rest": 90, "cue": "Two sets, same checklist: (1) butt back, not down; (2) soft knees; (3) bells slide down the thighs; (4) stop when the hamstrings stretch; (5) squeeze glutes to stand.", "mus": ["hamstrings", "glutes"], "act": "Back of the thighs. Feel them stretch as you hinge, then squeeze them to stand. If your lower back talks, the hamstrings aren't doing their job yet — lighten and go slower."}, {"name": "Leg Press", "sets": 2, "reps": "10", "load": "120", "last": "120×10 @3/2 RIR (9/24) 🟢", "rest": 90, "cue": "Two sets at 120, easy. Feet mid-platform, lower to 90°, full rest.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away."}, {"name": "Split Squat — RIGHT LEG FIRST — knee watch", "sets": 2, "reps": "8/leg", "load": "BW", "last": "10 at chest ×8 @3/2 RIR (9/24) 🟢 — 'holding the 10 at my chest hurt my elbow'", "rest": 90, "cue": "Bodyweight this week. The bell comes back when the elbow is quiet, and Block 2 holds it differently — one bell at your side, not at your chest. Right first, front shin vertical, knee over the second toe. Full 90 rest.", "mus": ["quads", "glutes"], "act": "Front of the thighs + the butt. Touch the top of your thighs before the set — those drive you up. Push the floor away.", "subs": ["Reverse Lunge — RIGHT LEG FIRST, BW ×10", "Step-Up — RIGHT LEG FIRST, BW ×10"]}, {"name": "Glute Bridge — feet on floor", "sets": 2, "reps": "12", "load": "35 (25 + 10)", "last": "35×12 @3/2/2 RIR (9/24) 🟢", "rest": 60, "cue": "Two sets at 35, both hands holding the plates. 2s squeeze at the top, ribs down. Block 2 gives this one more sets, not fewer.", "mus": ["glutes", "hamstrings"], "act": "The butt. Squeeze it hard at the top of every rep — if you feel it in your lower back instead, don't lift as high."}, {"name": "Side-Lying Inner-Thigh Raise — RIGHT SIDE FIRST", "sets": 2, "reps": "12/side", "load": "BW", "last": "Inner Thigh machine 15×15 — 'even 15 feels weird in my left groin' (9/24)", "rest": 45, "cue": "Lie on your right side. Bend the top leg and plant that foot flat on the floor in front of you; keep the bottom (right) leg straight. Lift the bottom leg 6–8 inches, 1s hold, 3s down. Twelve, then switch sides. Same muscle as the machine, no stretched start. Any groin twinge: stop, tag HURT, note it.", "mus": ["glutes"], "act": "Inner thigh — the long muscle from the groin down the inside of the thigh. Small range, slow. If you feel it in the groin crease rather than the thigh, lower the leg less.", "subs": ["Inner Thigh (machine) — 15×12, pads one notch narrower", "Sumo Squat — BW ×12, toes out"]}, {"name": "Side-Lying Leg Raise — RIGHT SIDE FIRST", "sets": 2, "reps": "15/side", "load": "BW", "last": "BW ×15 @3/3/3 RIR (9/24) 🟢 — 'the machine is fixed'", "rest": 45, "cue": "Two sets, right first, hips stacked, toes pointing forward, raise to about 45°, 1s hold, 3s down. The machine's fixed and it's in the sub list — but the floor version has been doing the job.", "mus": ["glutes"], "act": "Side of the hip — the muscle that keeps your knee from falling inward. If you feel it in the front of the hip, your toes are pointing up; point them forward.", "subs": ["Outer Thigh (machine) — 20×15", "Banded Lateral Walk — 15 steps each way ×2"]}]}, {"id": "upB", "date": "2026-10-02", "title": "Upper B — Deload — 30 min", "time": "Solo", "kind": "lift", "badge": "Strength", "why": "Row, MTS press, face pull, lateral raise — two sets each, four left. Friday was the tired one last week; this week it's the easy one", "research": "Last Friday you ground the row and the MTS press to zero reps left at the same weights as before and wrote 'tired, struggled' — with an 84% Whoop recovery. Whoop measures how your body recovered overnight; it can't see whether there's fuel in the muscle. That mismatch is the whole reason the Fuel card exists. This week the same lifts come in at two sets with four or more left; if 22.5 on the row isn't smooth at eight, the 20s are in the sub list and that's the right call, not a miss. Push-ups out for the elbow; plank on your hands if the forearm version bothers it. Tomorrow: measurements first thing, before food or water, then the walk, then Export — the paste to Chancey is what Block 2 is built from.", "warmup": "4 min: arm circles, band pull-aparts ×15, 10 slow wrist circles each way, one easy set of the row at half weight.", "ex": [{"name": "One-Arm DB Row — RIGHT ARM FIRST", "sets": 2, "reps": "8/arm", "load": "22.5/db", "last": "22.5×10/10/8 @2/1/0 RIR (9/25) — 'wouldn't say it was smooth'", "rest": 90, "cue": "Two sets of eight with the 22.5 — four left means it should feel smooth. If it doesn't, the 20s are the right call. Knee and hand on the bench, flat back, pull to the hip, elbow close, wrist straight. Right first.", "mus": ["lats", "upperback", "biceps"], "act": "Mid-back, between the shoulder blades. Start every pull by squeezing them together, then the arms follow.", "subs": ["One-Arm DB Row — RIGHT ARM FIRST, 20×10"]}, {"name": "Hammer Strength MTS Chest Press", "sets": 2, "reps": "8", "load": "20/side (40 total)", "last": "20/side ×10/9/8 @2/0/0 RIR (9/25) — 'not feeling it today'", "rest": 90, "cue": "Two sets of eight at 20 a side, four or more left. Blades pinned, both arms together. The elbow rule stands: a rep that hurts ends the set — tag HURT and write which rep.", "mus": ["chest", "triceps"], "act": "Chest. Hand flat on your chest — that muscle does the pressing. Shoulders down and back."}, {"name": "Face Pull (rope)", "sets": 2, "reps": "12", "load": "17.5", "last": "17.5×12 @3/3/3 RIR (9/25) 🟢 — no 15 on this stack", "rest": 60, "cue": "Two sets at 17.5. Rope at face height, thumbs pointing back, pull straight at your nose, hands finish beside your ears, elbows wide, 1s squeeze.", "mus": ["upperback", "shoulders"], "act": "Back of the shoulders and between the blades. Elbows lead, hands follow. This is the posture muscle."}, {"name": "DB Lateral Raise", "sets": 2, "reps": "12", "load": "5/db", "last": "7.5×10 @1 RIR, then 5×12 @2/1 (9/25)", "rest": 60, "cue": "Two sets with the 5s, twelve each, slow — like pouring two jugs. No 7.5s this week; that test comes back in Block 2.", "mus": ["shoulders"], "act": "Top of the shoulders. Light weight, no swinging — if you have to swing, it's too heavy."}, {"name": "Plank + Side Plank", "sets": 1, "reps": "40s + 25s/side", "load": "BW", "last": "Completed (9/25)", "rest": 45, "cue": "One round. Elbows under shoulders, glutes tight, hips level — or on your hands if the forearm plank bothers the elbow. Type your seconds in the reps box.", "mus": ["core"], "act": "Deep belly. Ribs down, low back gently pressed toward the floor. Breathe the whole time."}]}, {"id": "meas", "date": "2026-10-03", "title": "Measurement Day + Beach Walk", "time": "Morning", "kind": "act", "badge": "Mobility", "why": "Block 1's report card: seven numbers, three photos, an easy walk. Then Export", "research": "Do this before food, water, or the walk: bathroom first, then the scale — weight, body fat %, skeletal muscle %, muscle mass, water %, visceral fat. Then a soft tape, standing relaxed: shoulders at the widest point with arms down; right upper arm at the midpoint, flexed; waist at the navel; hips at the widest point; right thigh at the midpoint, standing; right calf at the widest point. Three photos in the same spot, same light, phone at chest height: front, side, back. Type the numbers into the note below in the format shown. From here on, scale weight is one number of seven — body fat, lean mass, and the tape are the scoreboard for the next two years, because the goal is lean and strong, not small. Then 30 minutes easy on the beach or a yoga class, sauna if you like, and Export the week. Block 2 arrives Monday.", "desc": "Measurements first (see above), then a 30-min beach walk or a yoga class. Type the numbers into the note in the format shown. Export the whole week after.", "distLabel": "Distance (mi)", "notePh": "BW __ · BF __% · SM __% · MM __ · Water __% · Visc __ | Shoulders __ · R arm __ · Waist __ · Hips __ · R thigh __ · R calf __ (in)"}], "tags": [{"l": "STRONG"}, {"l": "SMOOTH"}, {"l": "SORE", "cls": "sore"}, {"l": "HURT", "cls": "hurt"}, {"l": "PAIN", "cls": "pain"}], "restDate": "2026-10-04", "fuel": {"on": true, "phase": "Phase 0–1 · Refeed → Recomp", "ffm": 43.0, "bmr": 1298, "prot": 120, "protMeal": 30, "protDay": 110, "kcal": {"lift": 2000, "rest": 1800}, "carbs": {"lift": 245, "rest": 195}, "fatMin": 50, "burn": {"lift": 220, "act": 150}, "ea": {"red": 30, "green": 40}, "creatine": 5, "slots": [{"id": "pre", "l": "Pre-lift", "when": "5:50–6:15 AM", "p": "15–25 g", "c": "25–35 g", "cue": "Liquid is fine and fast: a banana and a scoop of whey in water, 30–45 minutes before the first set. Can't face food that early? The shake alone still counts."}, {"id": "post", "l": "Post-lift", "when": "within 45 min of the last set", "p": "35 g", "c": "50–60 g", "cue": "Inside 45 minutes of the last set — the app checks the clock. Eggs + toast + fruit; oats + whey + berries; a Greek yogurt bowl with granola. Creatine goes in this meal."}, {"id": "mid", "l": "Midday", "when": "12–1 PM", "p": "30 g", "c": "", "cue": "A palm of protein, a fist of carbs, a vegetable. Same shape every day."}, {"id": "snk", "l": "Afternoon", "when": "3:30–4:30 PM", "p": "15–25 g", "c": "", "cue": "Cottage cheese, jerky, string cheese and fruit, a shake. This is what stops dinner from being a rescue mission."}, {"id": "din", "l": "Dinner", "when": "6:30–7 PM", "p": "30 g", "c": "", "cue": "Protein, carbs, vegetables, some fat. Same plate, every night."}, {"id": "bed", "l": "Pre-sleep", "when": "9–9:30 PM", "p": "25–30 g", "c": "", "cue": "Slow protein 30–60 minutes before bed: cottage cheese, Greek yogurt, or a casein shake. This is tomorrow's 6:45 breakfast. Lights out by 10:30."}], "extraCue": "Anything off-plan — a drink, a handful of something, a restaurant meal. Log it so the day's total is true. Data, not judgment.", "staples": [{"n": "Whey scoop", "p": 25, "k": 120, "c": 3}, {"n": "Casein scoop", "p": 24, "k": 120, "c": 3}, {"n": "Greek yogurt, 1 cup nonfat", "p": 22, "k": 130, "c": 8}, {"n": "Cottage cheese, 1 cup 2%", "p": 24, "k": 180, "c": 8}, {"n": "3 eggs", "p": 18, "k": 210, "c": 1}, {"n": "Egg whites, 1/2 cup", "p": 13, "k": 60, "c": 1}, {"n": "Chicken breast, 4 oz cooked", "p": 35, "k": 185, "c": 0}, {"n": "Deli turkey, 3 oz", "p": 18, "k": 90, "c": 2}, {"n": "Salmon, 4 oz cooked", "p": 25, "k": 235, "c": 0}, {"n": "Lean ground beef 93/7, 4 oz cooked", "p": 27, "k": 210, "c": 0}, {"n": "Tuna pouch, 3 oz", "p": 19, "k": 90, "c": 0}, {"n": "Shrimp, 4 oz cooked", "p": 24, "k": 110, "c": 1}, {"n": "Tofu, firm, 1/2 block", "p": 20, "k": 180, "c": 4}, {"n": "Edamame, 1 cup shelled", "p": 17, "k": 190, "c": 14}, {"n": "String cheese", "p": 7, "k": 80, "c": 1}, {"n": "Beef jerky, 1 oz", "p": 10, "k": 80, "c": 6}, {"n": "Protein bar (typical)", "p": 20, "k": 210, "c": 22}, {"n": "Milk, 1 cup 2%", "p": 8, "k": 120, "c": 12}, {"n": "Banana", "p": 1, "k": 105, "c": 27}, {"n": "Apple", "p": 0, "k": 95, "c": 25}, {"n": "Berries, 1 cup", "p": 1, "k": 70, "c": 17}, {"n": "Oatmeal, 1/2 cup dry", "p": 5, "k": 150, "c": 27}, {"n": "Toast, 1 slice whole grain", "p": 4, "k": 80, "c": 15}, {"n": "Rice, 1 cup cooked", "p": 4, "k": 205, "c": 45}, {"n": "Sweet potato, medium", "p": 2, "k": 105, "c": 24}, {"n": "Black beans, 1/2 cup", "p": 7, "k": 115, "c": 20}, {"n": "Granola, 1/4 cup", "p": 3, "k": 130, "c": 18}, {"n": "Peanut butter, 1 tbsp", "p": 4, "k": 95, "c": 3}, {"n": "Avocado, 1/2", "p": 2, "k": 120, "c": 6}, {"n": "Olive oil, 1 tbsp", "p": 0, "k": 120, "c": 0}], "why": "Why this card exists: at 51, each meal needs about 30 g of protein to switch muscle-building on (Moore 2015) — the four-feeding day is the whole assignment, and 120 g total is 2 g per kg. Energy availability under 30 kcal per kg of lean mass is the line where recovery, hormones and bone start paying for training (Loucks; IOC 2018) — September's resting heart rate and HRV were that signature. Protein before bed builds muscle overnight and feeds the 6:45 session (Snijders 2015). Creatine plus lifting adds lean mass in women past menopause (Chilibeck 2015). The scale will rise 1–3 lb in the first two weeks: carbohydrate stored in muscle carries water. It is not fat."}};
 
 /* ---------- storage (safe) ---------- */
 let MEM = {}; let CANSTORE = true;
@@ -139,20 +171,27 @@ function load(){ try{ const s = localStorage.getItem(CFG.key); return s?JSON.par
 function save(){ try{ localStorage.setItem(CFG.key, JSON.stringify(S)); }
   catch(e){ CANSTORE=false; MEM = S; } }
 let S = load();
-S.r = S.r||{}; S.x = S.x||{}; S.act = S.act||{}; S.gl = S.gl||{}; S.added = S.added||{};
+S.r = S.r||{}; S.x = S.x||{}; S.act = S.act||{}; S.gl = S.gl||{}; S.added = S.added||{}; S.f = S.f||{}; S.stp = S.stp||[];
 
 /* ---------- helpers ---------- */
 const $ = id => document.getElementById(id);
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function todayISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function isoOf(ms){ const d=new Date(ms); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function todayISO(){ return isoOf(Date.now()); }
+function addDays(iso,n){ const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return isoOf(d.getTime()); }
 function dayName(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{weekday:'short'}); }
 function mday(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{month:'numeric',day:'numeric'}); }
 function doy(){ const d=new Date(); return Math.floor((d - new Date(d.getFullYear(),0,0))/864e5); }
 function minRep(r){ const m = String(r).match(/\d+/); return m?parseInt(m[0]):1; }
+function num(v){ const n=parseFloat(v); return isFinite(n)?n:0; }
+function fmtK(n){ return Math.round(n).toLocaleString('en-US'); }
 
 const DATES = [...new Set(CFG.sessions.map(s=>s.date))].sort();
-let CUR = DATES.includes(todayISO()) ? todayISO() : DATES[0];
+const WEEK = (function(){ const a=[]; let d=DATES[0]; const end=CFG.restDate||DATES[DATES.length-1]; while(d<=end && a.length<8){ a.push(d); d=addDays(d,1); } return a; })();
+let CUR = WEEK.includes(todayISO()) ? todayISO() : WEEK[0];
 let VIEW = 'week';
+const FUEL = CFG.fuel || {on:false};
+const EM = {grn:'🟢', yel:'🟡', red:'🔴'};
 
 /* ---------- session status ---------- */
 function sesStatus(s){
@@ -180,26 +219,30 @@ function renderWeek(){
   if(!CANSTORE) h += `<div class="banner">Preview mode — data will NOT save here. Save this file to your phone (Files app), then open it in Safari.</div>`;
   const all = CFG.sessions.length;
   const done = CFG.sessions.filter(s=>sesStatus(s).cls==='done').length;
-  h += `<div class="card"><div class="eyebrow">Week 6 · Sep 21 – 26 · Block 1 close · Mon/Tue/Thu/Fri, 45 min</div>
+  h += `<div class="card"><div class="eyebrow">${esc(CFG.weekLabel||'This week')}</div>
     <div style="font-size:14px">${done} of ${all} sessions complete</div>
     <div class="prog"><i style="width:${all?Math.round(done/all*100):0}%"></i></div></div>`;
-  DATES.forEach(d=>{
+  WEEK.forEach(d=>{
     const today = d===todayISO();
     const ss = CFG.sessions.filter(s=>s.date===d);
     h += `<div class="wk ${today?'today':''}" onclick="setDay('${d}')">
       <div class="wkh"><div class="wkd">${dayName(d)}${today?' · today':''}</div><div class="wkdate">${mday(d)}</div></div>`;
-    ss.forEach(s=>{
-      const st = sesStatus(s);
-      h += `<div class="wks"><div><span class="dot ${(s.badge||'').replace(' ','')}"></span><span class="t">${esc(s.title)}</span>
-        <div class="sub2" style="margin-left:15px">${esc(s.time||'')}</div></div>
-        <div class="st ${st.cls}">${st.txt}</div></div>`;
-    });
+    if(ss.length){
+      ss.forEach(s=>{
+        const st = sesStatus(s);
+        h += `<div class="wks"><div><span class="dot ${(s.badge||'').replace(' ','')}"></span><span class="t">${esc(s.title)}</span>
+          <div class="sub2" style="margin-left:15px">${esc(s.time||'')}</div></div>
+          <div class="st ${st.cls}">${st.txt}</div></div>`;
+      });
+    } else {
+      h += `<div class="wks"><div><span class="dot"></span><span class="t" style="color:var(--dim)">${d===CFG.restDate?'Full rest — export Saturday, reset today':'Rest day — the fuel still counts'}</span></div></div>`;
+    }
+    if(FUEL.on) h += fuelLine(d);
     h += `</div>`;
   });
-  h += `<div class="wk" onclick="void(0)"><div class="wkh"><div class="wkd" style="color:var(--dim)">Sun · rest</div><div class="wkdate">${mday(CFG.restDate||DATES[DATES.length-1])}</div></div>
-    <div class="wks"><div><span class="dot"></span><span class="t" style="color:var(--dim)">Full rest — export Saturday, reset today</span></div></div></div>`;
+  if(FUEL.on) h += fuelReport();
   h += `<div class="card"><div class="eyebrow">Week close-out</div>
-    <div class="small" style="margin-bottom:9px"><b>The ritual:</b> Saturday after the lift → Export week, paste to Claude. Sunday → Reset. Monday's files arrive reprogrammed.</div>
+    <div class="small" style="margin-bottom:9px"><b>The ritual:</b> Saturday after the walk → Export week, paste to Claude. Sunday → Reset (lifts only — check-ins, fuel and staples are kept). Monday's file arrives reprogrammed.</div>
     <div class="row"><button class="btn acc" onclick="exportData()">Export week &amp; copy</button>
     <button class="btn" onclick="shareData()">Share…</button>
     <button class="btn ghost" onclick="resetWeek()">Reset week</button></div></div>`;
@@ -211,11 +254,13 @@ function renderDay(){
   const a = $('app'); let h = '';
   h += `<div class="hdr"><div class="brand">${CFG.brand}</div><button class="home" onclick="goWeek()">‹ Week</button></div>`;
   if(!CANSTORE) h += `<div class="banner">Preview mode — data will NOT save here. Save this file to your phone (Files app), then open it in Safari. It works offline and remembers everything.</div>`;
-  h += `<div class="chips">` + DATES.map(d=>
+  h += `<div class="chips">` + WEEK.map(d=>
     `<button class="chip ${d===CUR?'on':''}" onclick="setDay('${d}')">${dayName(d)} ${mday(d)}</button>`).join('') + `</div>`;
   h += readinessCard();
   h += lowBanner();
+  if(FUEL.on) h += fuelCard();
   const todays = CFG.sessions.filter(s=>s.date===CUR);
+  if(!todays.length) h += restCard();
   todays.forEach(s=>{ h += missionCard(s); h += (s.kind==='lift') ? liftCard(s) : actCard(s); });
   h += `<div class="foot">Health is the goal. Log the truth. · ${CFG.tag}</div>`;
   a.innerHTML = h;
@@ -260,19 +305,35 @@ function lowBanner(){
   const avg = vals.length===3 ? (vals.reduce((a,b)=>a+b,0) + (r.so?(6-r.so):0)) / (r.so?4:3) : null;
   const whoopLow = CFG.whoop && r.rec && Number(r.rec) < 34;
   if((avg!==null && avg <= 2.5) || whoopLow){
-    return `<div class="adjust"><b>Readiness is low today.</b> Option, not an order: keep planned loads, drop the last set of each exercise, and bank recovery. Research: acute readiness-based volume cuts protect long-term progress (autoregulation, Helms 2018). Your call — you set the limits.</div>`;
+    let fl = '';
+    if(FUEL.on){
+      const y = addDays(CUR,-1); const fc = fuelCalc(y);
+      if(fc.logged) fl = ` <b>Yesterday's fuel:</b> P ${fc.P} g · ${fmtK(fc.K)} kcal · EA ${fc.ea.toFixed(0)} ${EM[fc.band]||''}${fc.band==='grn'?'.':' — that is the likeliest cause.'}`;
+      else fl = ` Yesterday's fuel wasn't logged — with September's numbers, an empty tank is the first suspect.`;
+    }
+    return `<div class="adjust"><b>Readiness is low today.</b> Option, not an order: keep planned loads, drop the last set of each exercise, and bank recovery. Research: acute readiness-based volume cuts protect long-term progress (autoregulation, Helms 2018). Your call — you set the limits.${fl}</div>`;
   }
   return '';
 }
 
 /* ---------- mission ---------- */
+function motivFor(date){ return CFG.motiv[(doy() + date.length) % CFG.motiv.length]; }
 function missionCard(s){
-  const m = CFG.motiv[(doy() + s.date.length) % CFG.motiv.length];
+  const m = motivFor(s.date);
   return `<div class="stitle"><h2>${esc(s.title)}</h2><span class="tag">${esc(s.time||'')}</span></div>
   <div class="card mission"><div class="eyebrow">Today's mission</div>
     <div class="p">${esc(s.why)}</div>
     <div class="r">${esc(s.research)}</div>
     <div class="m">“${esc(m)}”</div></div>`;
+}
+function restCard(){
+  const sun = CUR===CFG.restDate;
+  const tgt = FUEL.on ? `Rest-day targets are on the Fuel card above: ${fmtK(FUEL.kcal.rest)} kcal, ${FUEL.prot} g of protein in four feedings, pre-sleep protein still on, creatine still on. A walk is welcome, not required.` : 'A walk is welcome, not required.';
+  return `<div class="stitle"><h2>Rest day</h2><span class="tag">${sun?'reset day':'recovery'}</span></div>
+  <div class="card mission"><div class="eyebrow">Today's mission</div>
+    <div class="p">${sun?'Full rest. Reset the week tonight — check-ins and fuel are kept':'Recovery is when the muscle gets built. Eat like it'}</div>
+    <div class="r">${esc(tgt)}</div>
+    <div class="m">“${esc(motivFor(CUR))}”</div></div>`;
 }
 
 /* ---------- lift sessions ---------- */
@@ -346,6 +407,7 @@ function ckSet(sid,i,si,rest){
   greenCheck(sid,i); save(); render(); startTimer(rest, si+1);
 }
 function greenCheck(sid,i){
+  if(CFG.deload) return;
   const s = CFG.sessions.find(x=>x.id===sid); if(!s||!s.ex[i]) return;
   const ex = s.ex[i]; const st = exState(sid,i);
   const doneSets = st.sets.filter(x=>x&&x.t);
@@ -409,7 +471,7 @@ function addEx(sid){
   const k = xkey(sid); S.added[k] = S.added[k]||[]; S.added[k].push(n); save(); render();
 }
 
-/* ---------- activity sessions (yoga / walks / zone 2) ---------- */
+/* ---------- activity sessions (yoga / walks / measurements) ---------- */
 function aget(sid){ const k=xkey(sid); S.act[k]=S.act[k]||{}; return S.act[k]; }
 function aset(sid,f,v){ aget(sid)[f]=v; save(); if(f==='done'||f==='feel') render(); }
 function actCard(s){
@@ -422,9 +484,197 @@ function actCard(s){
     </div>
     <div class="lbl">How did it feel? (1 rough – 5 great)</div>
     <div class="rd">${[1,2,3,4,5].map(n=>`<button class="rb ${a.feel===n?'on':''}" onclick="aset('${s.id}','feel',${n})">${n}</button>`).join('')}</div>
-    <div class="lbl">Note</div><textarea onchange="aset('${s.id}','c',this.value)">${esc(a.c||'')}</textarea>
+    <div class="lbl">${s.notePh?'Note · measurements':'Note'}</div><textarea placeholder="${esc(s.notePh||'')}" onchange="aset('${s.id}','c',this.value)">${esc(a.c||'')}</textarea>
     <div style="margin-top:12px"><button class="done-big ${a.done?'on':''}" onclick="aset('${s.id}','done',${a.done?0:1})">${a.done?'✓ Done':'Mark done'}</button></div>
   </div>`;
+}
+
+/* ---------- fuel ---------- */
+function fget(d){ S.f[d] = S.f[d]||{}; return S.f[d]; }
+function fslot(d,id){ const f=fget(d); f[id]=f[id]||{p:'',k:'',c:'',t:'',it:[]}; return f[id]; }
+function tms(d,t){ if(!t) return null; const x=new Date(d+'T'+t+':00').getTime(); return isFinite(x)?x:null; }
+function hm12(t){ if(!t) return ''; const p=t.split(':'); let h=parseInt(p[0]); const m=p[1]; const ap=h>=12?'PM':'AM'; h=h%12; if(h===0)h=12; return h+':'+m+' '+ap; }
+function nowHM(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function setsOn(d){
+  let first=null,last=null;
+  Object.keys(S.x).forEach(k=>{ const x=S.x[k]; if(!x) return; Object.keys(x).forEach(i=>{ if(i==='note') return; const st=x[i]; if(!st||!st.sets) return;
+    st.sets.forEach(t=>{ if(t&&t.t&&isoOf(t.t)===d){ if(first===null||t.t<first) first=t.t; if(last===null||t.t>last) last=t.t; } }); }); });
+  const f = S.f[d];
+  if(first){ if(f) f.so={first,last}; else S.f[d]={so:{first,last}}; return {first,last}; }
+  if(f&&f.so&&f.so.first) return {first:f.so.first,last:f.so.last};
+  return {first:null,last:null};
+}
+function dayKind(d){
+  if(setsOn(d).first) return 'lift';
+  if(CFG.sessions.some(s=>s.kind==='lift'&&s.date===d) && d>=todayISO()) return 'lift';
+  return 'rest';
+}
+function actDone(d){ return CFG.sessions.some(s=>s.kind!=='lift'&&s.date===d&&(S.act[d+'|'+s.id]||{}).done); }
+function fuelCalc(d){
+  const f=S.f[d]||{}; const kind=dayKind(d); const so=setsOn(d);
+  let P=0,K=0,C=0,n30=0,logged=false;
+  FUEL.slots.concat([{id:'x'}]).forEach(sl=>{ const s=f[sl.id]; if(!s) return; const p=num(s.p),k=num(s.k),c=num(s.c);
+    if(p||k||c) logged=true; P+=p; K+=k; C+=c; if(p>=FUEL.protMeal) n30++; });
+  const burn = so.first ? FUEL.burn.lift : (kind==='lift' ? FUEL.burn.lift : (actDone(d)?FUEL.burn.act:0));
+  const tgtK = kind==='lift'?FUEL.kcal.lift:FUEL.kcal.rest;
+  const tgtC = kind==='lift'?FUEL.carbs.lift:FUEL.carbs.rest;
+  const ea = logged ? (K-burn)/FUEL.ffm : null;
+  const band = ea===null ? '' : (ea<FUEL.ea.red?'red':(ea<FUEL.ea.green?'yel':'grn'));
+  const pre=f.pre||{}, post=f.post||{}, bed=f.bed||{};
+  let preOk=null, preMin=null, postOk=null, postMin=null;
+  if(kind==='lift'){
+    const pt=tms(d,pre.t), qt=tms(d,post.t);
+    if(so.first&&pt){ preMin=Math.round((so.first-pt)/60000); preOk=(preMin>=0&&preMin<=150); }
+    if(so.last&&qt){ postMin=Math.round((qt-so.last)/60000); postOk=(postMin>=-5&&postMin<=45); }
+  }
+  const bedOk = num(bed.p)>=20;
+  let st='';
+  if(logged){ st = (P>=FUEL.prot && band==='grn') ? 'grn' : ((P>=FUEL.prot*0.8 && band!=='red') ? 'yel' : 'red'); }
+  return {kind,P,K,C,n30,burn,tgtK,tgtC,ea,band,preOk,preMin,postOk,postMin,bedOk,logged,st,so,cr:!!f.cr,pre,post};
+}
+function eaText(c,today){
+  if(c.ea===null) return `<b>Energy availability</b> shows once a feeding is logged. Under ${FUEL.ea.red} is the low-fuel line; ${FUEL.ea.green}+ is green. (intake − session burn) ÷ ${FUEL.ffm} kg lean mass.`;
+  const calc = `<span style="color:var(--dim)">(${fmtK(c.K)} − ${c.burn} burn) ÷ ${FUEL.ffm} kg lean</span>`;
+  if(today && c.band!=='grn'){
+    const need = Math.ceil(FUEL.ea.green*FUEL.ffm + c.burn - c.K);
+    return `<b>Energy availability so far ${c.ea.toFixed(0)}</b> — about <b>${fmtK(need)} kcal</b> more gets you to ${FUEL.ea.green} 🟢 by bedtime. ${calc}`;
+  }
+  const msg = {red:`under ${FUEL.ea.red} — the low-fuel line. Eat.`, yel:`${FUEL.ea.red}–${FUEL.ea.green-1} — better, not there. Carbs around the lift.`, grn:`${FUEL.ea.green}+ — fueled.`}[c.band];
+  return `<b>Energy availability ${c.ea.toFixed(0)}</b> ${EM[c.band]} — ${msg} ${calc}`;
+}
+function timingText(c){
+  const bed = c.bedOk ? '<b>✓</b>' : '—';
+  if(c.kind!=='lift') return `Rest day · Pre-sleep protein ${bed}`;
+  let pre, post;
+  if(c.preOk===true) pre = `<b>✓ ${hm12(c.pre.t)}</b> (${c.preMin} min before the first set)`;
+  else if(c.preOk===false) pre = `<b>✗</b> ${hm12(c.pre.t)} — ${c.preMin<0?'after the first set':'more than 2.5 h before'}`;
+  else if(c.pre.t) pre = `⏱ ${hm12(c.pre.t)} — lift not logged yet`;
+  else pre = c.so.first ? '<b>✗</b> none logged' : '—';
+  if(c.postOk===true) post = `<b>✓ ${hm12(c.post.t)}</b> (${c.postMin} min after the last set)`;
+  else if(c.postOk===false) post = `<b>⚠</b> ${hm12(c.post.t)} — ${c.postMin} min after the last set`;
+  else if(c.post.t) post = `⏱ ${hm12(c.post.t)} — lift not logged yet`;
+  else if(c.so.last){ const late=Math.round((Date.now()-c.so.last)/60000); post = late>45 ? `<b>✗</b> not logged — ${late} min since the last set` : `<b>window open</b> — ${45-late} min left`; }
+  else post = '—';
+  return `Pre-lift ${pre}<br>Post-lift ${post}<br>Pre-sleep protein ${bed}`;
+}
+function fuelCard(){
+  const d=CUR; const c=fuelCalc(d); const f=fget(d);
+  const pct=(a,b)=>Math.min(100,Math.round(a/b*100));
+  const kindLbl = c.kind==='lift'?'Lift day':'Rest day';
+  const open = (f.ui===undefined) ? true : !!f.ui;
+  const today = d===todayISO();
+  let h = `<details ${open?'open':''} ontoggle="fui(this.open)"><summary id="fsum">${fuelSummary(c,kindLbl,today)}</summary>
+  <div class="card fuel">
+    <div class="eyebrow">Fuel · ${kindLbl} · ${esc(FUEL.phase)}</div>
+    <div class="ftg">Today: <b>${FUEL.prot} g protein</b> in <b>4 feedings of ${FUEL.protMeal}+</b> · <b>${fmtK(c.tgtK)} kcal</b> · carbs ~${c.tgtC} g · fat ≥ ${FUEL.fatMin} g. Tap <b>Ate now</b> when you eat — it's how the app checks the lift windows.</div>
+    <div class="fbar"><div class="fbl"><span>Protein</span><span id="fp_txt">${c.P} / ${FUEL.prot} g · ${c.n30} of 4 feedings ≥ ${FUEL.protMeal}</span></div><div class="prog"><i id="fp_bar" style="width:${pct(c.P,FUEL.prot)}%"></i></div></div>
+    <div class="fbar"><div class="fbl"><span>Energy</span><span id="fk_txt">${fmtK(c.K)} / ${fmtK(c.tgtK)} kcal · carbs ${c.C} g</span></div><div class="prog"><i class="k" id="fk_bar" style="width:${pct(c.K,c.tgtK)}%"></i></div></div>
+    <div class="fea ${today&&c.band!=='grn'?'':c.band}" id="fea">${eaText(c,today)}</div>
+    <div class="ftim" id="ftim">${timingText(c)}</div>
+    <div class="row"><button class="btn ${c.cr?'acc':''}" onclick="fcr()">${c.cr?'✓ Creatine '+FUEL.creatine+' g taken':'Creatine '+FUEL.creatine+' g — tap when taken'}</button></div>`;
+  FUEL.slots.forEach(sl=>{ h += slotRow(d,sl,c); });
+  h += slotRow(d,{id:'x',l:'Anything else',when:'off-plan',p:'',c:'',cue:FUEL.extraCue},c);
+  h += `<div class="small" style="margin-top:12px">${esc(FUEL.why)}</div>
+  </div></details>`;
+  return h;
+}
+function fuelSummary(c,kindLbl,today){
+  const ea = c.ea===null ? '' : (today && c.band!=='grn' ? ' · EA '+c.ea.toFixed(0)+' so far' : ' · EA '+c.ea.toFixed(0)+' '+EM[c.band]);
+  return `Fuel · ${kindLbl.toLowerCase()} · ${c.P} / ${FUEL.prot} g protein · ${fmtK(c.K)} / ${fmtK(c.tgtK)} kcal${ea}`;
+}
+function slotRow(d,sl,c){
+  const s=fslot(d,sl.id); const open=(fget(d).open===sl.id);
+  const p=num(s.p), k=num(s.k);
+  const liftOnly = (sl.id==='pre'||sl.id==='post') && c.kind!=='lift';
+  const tgt = sl.p ? `${esc(sl.p)} protein${sl.c?' · '+esc(sl.c)+' carbs':(sl.id==='mid'||sl.id==='din'?' · carbs + veg':'')}` : '';
+  return `<div class="fslot ${p>=FUEL.protMeal?'hit':''} ${liftOnly?'dimm':''}" id="fs_${sl.id}">
+    <div class="fsh"><div><b>${esc(sl.l)}</b><span class="fwhen">${esc(liftOnly?'lift days only':sl.when)}</span></div><div class="fpk" id="fpk_${sl.id}">${p?p+' g':''}${p&&k?' · ':''}${k?fmtK(k)+' kcal':''}</div></div>
+    ${tgt?`<div class="ftgt">${tgt}</div>`:''}
+    <div class="fin">
+      <input inputmode="numeric" placeholder="protein g" value="${esc(s.p)}" onchange="fset('${sl.id}','p',this.value)">
+      <input inputmode="numeric" placeholder="kcal" value="${esc(s.k)}" onchange="fset('${sl.id}','k',this.value)">
+      <input inputmode="numeric" placeholder="carbs g" value="${esc(s.c)}" onchange="fset('${sl.id}','c',this.value)">
+    </div>
+    <div class="fin2">
+      <input type="time" value="${esc(s.t)}" onchange="fset('${sl.id}','t',this.value)">
+      <button class="btn fx ${s.t?'on':''}" onclick="fnow('${sl.id}')">${s.t?'✓ Ate':'Ate now'}</button>
+    </div>
+    ${s.it&&s.it.length?`<div class="fit">${s.it.map(esc).join(' · ')}</div>`:''}
+    <div class="row"><button class="btn ghost" onclick="fopen('${sl.id}')">${open?'Done adding':'＋ Add food'}</button>${(p||k||s.t)?`<button class="btn ghost" onclick="fclear('${sl.id}')">Clear</button>`:''}</div>
+    ${open?picker(sl.id):''}
+    ${sl.cue?`<div class="cue">Coach: ${esc(sl.cue)}</div>`:''}
+  </div>`;
+}
+function picker(id){
+  const all = (S.stp||[]).concat(FUEL.staples);
+  return `<div class="fpick">${all.map((x,i)=>`<button class="fchip" onclick="fadd('${id}',${i})">${esc(x.n)}<span>${x.p}p · ${x.k}</span></button>`).join('')}
+    <button class="fchip new" onclick="fnew('${id}')">＋ My staple…</button></div>`;
+}
+function fuelRefresh(){
+  const c=fuelCalc(CUR); const pct=(a,b)=>Math.min(100,Math.round(a/b*100));
+  const kindLbl = c.kind==='lift'?'Lift day':'Rest day'; const today = CUR===todayISO();
+  const set=(id,v)=>{ const e=$(id); if(e) e.innerHTML=v; };
+  set('fsum', fuelSummary(c,kindLbl,today));
+  set('fp_txt', `${c.P} / ${FUEL.prot} g · ${c.n30} of 4 feedings ≥ ${FUEL.protMeal}`); if($('fp_bar')) $('fp_bar').style.width=pct(c.P,FUEL.prot)+'%';
+  set('fk_txt', `${fmtK(c.K)} / ${fmtK(c.tgtK)} kcal · carbs ${c.C} g`); if($('fk_bar')) $('fk_bar').style.width=pct(c.K,c.tgtK)+'%';
+  if($('fea')){ $('fea').className='fea '+(today&&c.band!=='grn'?'':c.band); $('fea').innerHTML=eaText(c,today); }
+  set('ftim', timingText(c));
+  FUEL.slots.concat([{id:'x'}]).forEach(sl=>{ const s=fslot(CUR,sl.id); const p=num(s.p),k=num(s.k);
+    set('fpk_'+sl.id, `${p?p+' g':''}${p&&k?' · ':''}${k?fmtK(k)+' kcal':''}`);
+    const e=$('fs_'+sl.id); if(e){ e.classList.toggle('hit', p>=FUEL.protMeal); } });
+}
+function fset(id,fld,v){ const s=fslot(CUR,id); s[fld]=v; save(); fuelRefresh(); }
+function fnow(id){ const s=fslot(CUR,id); s.t=nowHM(); save(); render(); }
+function fclear(id){ if(!confirm('Clear this feeding?')) return; const s=fslot(CUR,id); s.p='';s.k='';s.c='';s.t='';s.it=[]; save(); render(); }
+function fopen(id){ const f=fget(CUR); f.open = (f.open===id)?null:id; save(); render(); }
+function fadd(id,i){
+  const all=(S.stp||[]).concat(FUEL.staples); const x=all[i]; if(!x) return;
+  const s=fslot(CUR,id);
+  s.p=String(Math.round(num(s.p)+num(x.p))); s.k=String(Math.round(num(s.k)+num(x.k))); s.c=String(Math.round(num(s.c)+num(x.c)));
+  s.it=(s.it||[]).concat([x.n]); if(!s.t && CUR===todayISO()) s.t=nowHM();
+  save(); render();
+}
+function fnew(id){
+  const raw = prompt('Your staple — name, protein g, kcal, carbs g\n(e.g. Turkey wrap, 28, 350, 30)'); if(!raw) return;
+  const parts = raw.split(',').map(s=>s.trim()); if(parts.length<3 || !parts[0]){ alert('Need at least: name, protein, kcal'); return; }
+  const x={n:parts[0], p:num(parts[1]), k:num(parts[2]), c:num(parts[3]||0)};
+  S.stp.unshift(x); save(); fadd(id,0);
+}
+function fcr(){ const f=fget(CUR); f.cr = f.cr?0:1; save(); render(); }
+function fui(o){ const f=fget(CUR); const v=o?1:0; if(f.ui!==v){ f.ui=v; save(); } }
+function fuelLine(d){
+  const c=fuelCalc(d); const past = d < todayISO();
+  const txt = c.logged ? `P ${c.P} · ${fmtK(c.K)} kcal · EA ${c.ea.toFixed(0)}${past&&c.st?' '+EM[c.st]:''}` : (past?'not logged':'—');
+  return `<div class="wks"><div><span class="dot Fuel"></span><span class="t">Fuel</span>
+    <div class="sub2" style="margin-left:15px">${c.kind==='lift'?'lift day · '+fmtK(FUEL.kcal.lift):'rest day · '+fmtK(FUEL.kcal.rest)} kcal · ${FUEL.prot} g</div></div>
+    <div class="st ${past?c.st:''}">${txt}</div></div>`;
+}
+function fuelStats(){
+  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const days = WEEK.map(d=>({d,c:fuelCalc(d)}));
+  const logged = days.filter(o=>o.c.logged);
+  const lifted = days.filter(o=>o.c.so.first);
+  const bw = WEEK.map(d=>num((S.r[d]||{}).bw)).filter(v=>v>0);
+  const rec = WEEK.map(d=>num((S.r[d]||{}).rec)).filter(v=>v>0);
+  return {
+    n: logged.length, lifts: lifted.length,
+    P: avg(logged.map(o=>o.c.P)), K: avg(logged.map(o=>o.c.K)), EA: avg(logged.map(o=>o.c.ea)),
+    pDays: logged.filter(o=>o.c.P>=FUEL.protDay).length, n30: avg(logged.map(o=>o.c.n30)),
+    pre: lifted.filter(o=>o.c.preOk===true).length, post: lifted.filter(o=>o.c.postOk===true).length,
+    bed: logged.filter(o=>o.c.bedOk).length, cr: days.filter(o=>o.c.cr).length,
+    bw0: bw.length?bw[0]:null, bw1: bw.length?bw[bw.length-1]:null, rec: avg(rec)
+  };
+}
+function fuelReport(){
+  const s = fuelStats();
+  if(!s.n && !s.cr) return `<div class="card fuel"><div class="eyebrow">Fuel report · this week</div><div class="small">Nothing logged yet. Tap a day, open Fuel, log what you eat. Four feedings of 30 g protein is the whole assignment.</div></div>`;
+  const eaB = s.EA===null?'':(s.EA<FUEL.ea.red?'red':(s.EA<FUEL.ea.green?'yel':'grn'));
+  return `<div class="card fuel"><div class="eyebrow">Fuel report · this week</div><div class="frep">
+    <span class="k">Protein</span><span>avg <b>${s.P===null?'—':Math.round(s.P)+' g'}</b> · <b>${s.pDays}/${s.n}</b> days ≥ ${FUEL.protDay} · <b>${s.n30===null?'—':s.n30.toFixed(1)}</b> feedings ≥ ${FUEL.protMeal}/day</span>
+    <span class="k">Energy</span><span>avg <b>${s.K===null?'—':fmtK(s.K)+' kcal'}</b> · EA avg <b>${s.EA===null?'—':s.EA.toFixed(0)}</b> ${EM[eaB]||''}</span>
+    <span class="k">Timing</span><span>pre-lift <b>${s.pre}/${s.lifts}</b> · post-lift <b>${s.post}/${s.lifts}</b> · pre-sleep <b>${s.bed}/${s.n}</b></span>
+    <span class="k">Creatine</span><span><b>${s.cr}/7</b> · BW <b>${s.bw0===null?'—':s.bw0+' → '+s.bw1}</b> · Whoop rec avg <b>${s.rec===null?'—':Math.round(s.rec)+'%'}</b></span>
+  </div>${WEEK.includes(todayISO())&&fuelCalc(todayISO()).logged?`<div class="small" style="margin-top:8px">Today is counted as logged so far — the averages settle by bedtime.</div>`:''}</div>`;
 }
 
 /* ---------- rest timer ---------- */
@@ -446,8 +696,9 @@ function startTimer(sec, nextSet){
 function stopTimer(){ if(TINT) clearInterval(TINT); $('timer').style.display='none'; }
 
 /* ---------- export ---------- */
+function tmark(ok){ return ok===true?'✓':(ok===false?'✗':'—'); }
 function buildExport(){
-  let out = CFG.name.toUpperCase() + ' — C&C LOG EXPORT — ' + new Date().toLocaleString() + '\n';
+  let out = CFG.name.toUpperCase() + ' — C&C LOG EXPORT — ' + new Date().toLocaleString() + '\n' + (CFG.weekLabel||'') + '\n';
   Object.keys(S.r).sort().forEach(d=>{
     const r = S.r[d]; const has = Object.values(r).some(v=>v);
     if(!has) return;
@@ -456,6 +707,24 @@ function buildExport(){
     if(r.slh) out += ' | sleep ' + r.slh + 'h';
     if(CFG.whoop && (r.rec||r.hrv)) out += ' | Whoop rec ' + (r.rec||'-') + '% HRV ' + (r.hrv||'-') + ' RHR ' + (r.rhr||'-') + ' strain ' + (r.strain||'-');
   });
+  if(FUEL.on){
+    let fl = '';
+    Object.keys(S.f).sort().forEach(d=>{
+      const c = fuelCalc(d); if(!c.logged && !c.cr) return;
+      fl += '\n' + d + ' fuel [' + c.kind + ']: P ' + c.P + 'g (' + c.n30 + '×' + FUEL.protMeal + '+) | ' + fmtK(c.K) + ' kcal | C ' + c.C + 'g | EA ' + (c.ea===null?'-':c.ea.toFixed(0)) + ' ' + (EM[c.band]||'');
+      if(c.kind==='lift') fl += ' | pre ' + tmark(c.preOk) + (c.preMin!==null?' ('+c.preMin+' min before)':'') + ' | post ' + tmark(c.postOk) + (c.postMin!==null?' ('+c.postMin+' min after)':'');
+      fl += ' | bed ' + (c.bedOk?'✓':'—') + ' | creatine ' + (c.cr?'✓':'—');
+      const f = S.f[d];
+      const parts = FUEL.slots.concat([{id:'x',l:'extra'}]).map(sl=>{ const s=f[sl.id]; if(!s||!(num(s.p)||num(s.k))) return null;
+        return sl.id + (s.t?' '+hm12(s.t):'') + ' P' + num(s.p) + '/' + fmtK(num(s.k)) + (s.it&&s.it.length?' ['+s.it.join(', ')+']':''); }).filter(Boolean);
+      if(parts.length) fl += '\n   ' + parts.join(' · ');
+    });
+    if(fl){
+      const s = fuelStats();
+      out += '\n' + fl;
+      out += '\n\nFUEL WEEK: protein avg ' + (s.P===null?'-':Math.round(s.P)+'g') + ' · ≥' + FUEL.protDay + 'g on ' + s.pDays + '/' + s.n + ' logged days · ' + (s.n30===null?'-':s.n30.toFixed(1)) + ' feedings≥' + FUEL.protMeal + '/day · kcal avg ' + (s.K===null?'-':fmtK(s.K)) + ' · EA avg ' + (s.EA===null?'-':s.EA.toFixed(0)) + ' · pre-lift ' + s.pre + '/' + s.lifts + ' · post-lift ' + s.post + '/' + s.lifts + ' · pre-sleep ' + s.bed + '/' + s.n + ' · creatine ' + s.cr + '/7 · BW ' + (s.bw0===null?'-':s.bw0+'→'+s.bw1) + ' · rec avg ' + (s.rec===null?'-':Math.round(s.rec)+'%');
+    }
+  }
   CFG.sessions.forEach(s=>{
     const k = s.date + '|' + s.id;
     if(s.kind==='lift'){
@@ -503,9 +772,9 @@ function shareData(){
   else exportData();
 }
 function resetWeek(){
-  if(!confirm('Reset for the new week? Make sure you exported first — this clears the week\'s logs. Green lights are kept.')) return;
-  S.x={}; S.act={}; S.r={}; S.added={}; save(); VIEW='week'; render();
-  alert('Clean slate. Green lights carried forward. See you Monday.');
+  if(!confirm('Reset for the new week? This clears the week\'s lifts and activities. Check-ins, fuel logs, staples and green lights are kept. Export first.')) return;
+  S.x={}; S.act={}; S.added={}; save(); VIEW='week'; render();
+  alert('Clean slate for the lifts. Check-ins and fuel history carried forward. See you Monday.');
 }
 
 render();
